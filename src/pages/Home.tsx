@@ -1,8 +1,11 @@
 import React from "react";
+import Carousel from "../shared/ui/Carousel";
 
 const Home = () => {
   return (
-    <div className="text-3xl font-bold underline">This is the home page</div>
+    <div>
+      <Carousel />
+    </div>
   );
 };
 
