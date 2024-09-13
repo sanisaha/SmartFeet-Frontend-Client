@@ -77,28 +77,30 @@ const FeaturedSection = () => {
   return (
     <div className="bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       {/* Section Title */}
-      <div className="relative w-full md:w-1/3">
-        {/* Large Blurred Text */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-[10rem] font-bold text-gray-200 opacity-20">
+      <div className="relative w-full md:w-2/3">
+        {/* Large Blurred Text, hidden on small screens */}
+        <div className="absolute inset-0 flex items-center justify-start">
+          <h1 className="text-[8rem] font-bold text-gray-400 overflow-hidden opacity-20 hidden sm:block">
             FEATURED
           </h1>
         </div>
 
         {/* Submerged Title and Description */}
         <div className="relative z-10 p-4">
-          <h2 className="text-4xl font-bold mb-4">Featured Shoes</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            Featured Shoes
+          </h2>
           <div className="w-24 border-b-2 border-gray-500"></div>
         </div>
       </div>
 
       {/* Category Filters */}
-      <div className="flex justify-end mb-8 space-x-4">
+      <div className="flex flex-wrap justify-center sm:justify-end gap-2 sm:gap-4 mb-8">
         {categories.map((category) => (
           <button
             key={category}
             onClick={() => setFilteredCategory(category)}
-            className={`px-4 py-2 rounded-full border-2 font-semibold transition-colors ${
+            className={`px-3 sm:px-4 py-2 rounded-full border-2 font-semibold transition-colors ${
               filteredCategory === category
                 ? "bg-black text-white border-black"
                 : "bg-white text-black border-gray-300 hover:bg-gray-200"

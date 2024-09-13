@@ -72,7 +72,7 @@ const Header = () => {
 
           {/* Women Dropdown Menu */}
           {isWomenDropdownOpen && (
-            <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md z-20">
+            <div className="absolute left-0 mt-0 w-48 bg-white shadow-lg rounded-md z-20">
               <ul className="py-2">
                 <li>
                   <a
@@ -116,7 +116,7 @@ const Header = () => {
 
           {/* Men Dropdown Menu */}
           {isMenDropdownOpen && (
-            <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md z-20">
+            <div className="absolute left-0 mt-0 w-48 bg-white shadow-lg rounded-md z-20">
               <ul className="py-2">
                 <li>
                   <a
@@ -160,7 +160,7 @@ const Header = () => {
 
           {/* Kids Dropdown Menu */}
           {isKidsDropdownOpen && (
-            <div className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md z-20">
+            <div className="absolute left-0 mt-0 w-48 bg-white shadow-lg rounded-md z-20">
               <ul className="py-2">
                 <li>
                   <a
