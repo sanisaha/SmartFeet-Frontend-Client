@@ -1,8 +1,10 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { productReducer } from './productSlice';
 //import { addressReducer } from './addressSlice';
 
 export const store = configureStore({
   reducer: {
+    products : productReducer,
     //addressReducer
   },
 });
