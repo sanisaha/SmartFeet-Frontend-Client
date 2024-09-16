@@ -9,6 +9,7 @@ import {
   SubCategoryName,
 } from "../models/enums/AllEnum";
 import { useLocation } from "react-router-dom";
+import ProductHeader from "../shared/ui/ProductHeader";
 
 export const categories: CategoryName[] = ["Men", "Women", "Kids"];
 export const subcategories: SubCategoryName[] = [
@@ -27,7 +28,7 @@ export const subcategories: SubCategoryName[] = [
 const brands = ["Nike", "Adidas", "Puma", "Reebok"];
 const sizes: SizeValue[] = ["Small", "Medium", "Large", "ExtraLarge"];
 
-const MenShoesPage = () => {
+const ShoesPage = () => {
   const location = useLocation();
   const { category, subcategory } = location.state || {};
   const [selectedCategory, setSelectedCategory] = useState<CategoryName>(
@@ -85,6 +86,7 @@ const MenShoesPage = () => {
 
   return (
     <div>
+      <ProductHeader />
       <div className="w-full bg-gray-200 py-4 flex items-center justify-center shadow-sm">
         <div className="flex items-center text-lg font-semibold text-gray-800">
           <svg
@@ -225,4 +227,4 @@ const MenShoesPage = () => {
   );
 };
 
-export default MenShoesPage;
+export default ShoesPage;
