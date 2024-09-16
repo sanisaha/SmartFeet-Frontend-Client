@@ -1,48 +1,15 @@
 import React, { useState } from "react";
-import {
-  MagnifyingGlassIcon,
-  XCircleIcon,
-  Bars3Icon,
-  XMarkIcon,
-} from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
-import { CategoryName, SubCategoryName } from "../../models/enums/AllEnum";
-import Dropdown from "../services/Dropdown";
-import { categories, subcategories } from "../../pages/ShoesPage";
 
-const Header = () => {
-  const [dropdownStates, setDropdownStates] = useState({
-    Women: false,
-    Men: false,
-    Kids: false,
-  });
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle the mobile menu
+const ProductHeader = () => {
   const [searchText, setSearchText] = useState("");
-
-  const navigate = useNavigate();
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
   const clearSearch = () => {
     setSearchText("");
-  };
-
-  const navigateToAllShoes = (
-    category: CategoryName,
-    subcategory?: SubCategoryName
-  ) => {
-    navigate(`/shoes`, {
-      state: { category, subcategory }, // Pass category and subcategory in state
-    });
-  };
-
-  const toggleDropdown = (category: CategoryName) => {
-    setDropdownStates((prevState) => ({
-      ...prevState,
-      [category]: !prevState[category],
-    }));
   };
 
   return (
@@ -67,35 +34,6 @@ const Header = () => {
           </span>
         </a>
       </div>
-
-      {/* Hamburger Menu Button for Mobile */}
-      <div className="md:hidden">
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="text-gray-600 focus:outline-none"
-        >
-          {isMenuOpen ? (
-            <XMarkIcon className="h-6 w-6" />
-          ) : (
-            <Bars3Icon className="h-6 w-6" />
-          )}
-        </button>
-      </div>
-
-      {/* Desktop Navigation Links in the center (Hidden on small screens) */}
-      <nav className="hidden md:flex space-x-6 text-sm font-medium mx-auto">
-        {/* Loop through categories to render Dropdowns */}
-        {categories.map((category) => (
-          <Dropdown
-            key={category} // Add a unique key
-            category={category}
-            subcategories={subcategories}
-            isOpen={dropdownStates[category as keyof typeof dropdownStates]}
-            setIsOpen={() => toggleDropdown(category)}
-            navigateToAllShoes={navigateToAllShoes}
-          />
-        ))}
-      </nav>
 
       {/* Search, User, and Cart on the right */}
       <div className="flex space-x-4 items-center">
@@ -154,43 +92,8 @@ const Header = () => {
           </span>
         </a>
       </div>
-
-      {/* Mobile Menu (Visible on small screens) */}
-      {isMenuOpen && (
-        <nav className="md:hidden absolute top-16 left-0 w-full bg-white shadow-lg z-20">
-          <ul className="flex flex-col space-y-4 py-4 px-6 text-lg">
-            <li>
-              <button
-                type="button"
-                onClick={() => navigateToAllShoes("Women")}
-                className="text-blue-600 hover:text-red-600"
-              >
-                WOMEN
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                onClick={() => navigateToAllShoes("Men")}
-                className="text-blue-600 hover:text-red-600"
-              >
-                MEN
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                onClick={() => navigateToAllShoes("Kids")}
-                className="text-blue-600 hover:text-red-600"
-              >
-                KIDS
-              </button>
-            </li>
-          </ul>
-        </nav>
-      )}
     </header>
   );
 };
 
-export default Header;
+export default ProductHeader;
