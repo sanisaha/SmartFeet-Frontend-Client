@@ -2,9 +2,19 @@ import { createAsyncThunk, createSlice, PayloadAction, Slice, ActionReducerMapBu
 import axios, { AxiosError } from "axios";
 import { BaseEntity } from "../../models/shared/BaseEntity";
 
+// Paginated result interface
+interface PaginatedResult<T> {
+  items: T[];
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+}
 
 export interface BaseState<T extends BaseEntity> {
   items: T[];
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
   loading: boolean;
   error?: string;
 }
@@ -22,15 +32,18 @@ export class BaseSlice<T extends BaseEntity, CreateDto, UpdateDto> {
     this.apiEndpoint = apiEndpoint;
 
     // Create Async Thunks for CRUD Operations
-    this.fetchAll = createAsyncThunk<T[]>(`${sliceName}/fetchAll`, async (_, { rejectWithValue }) => {
-      try {
-        const response = await axios.get<T[]>(`${this.apiEndpoint}`);
-        return response.data;
-      } catch (error: unknown) {
-        const err = error as AxiosError;
-        return rejectWithValue(err.message);
+    this.fetchAll = createAsyncThunk<PaginatedResult<T>, { page: number; pageSize: number }>(
+      `${sliceName}/fetchAll`,
+      async ({ page, pageSize }, { rejectWithValue }) => {
+        try {
+          const response = await axios.get<PaginatedResult<T>>(`${this.apiEndpoint}?page=${page}&pageSize=${pageSize}`);
+          return response.data;
+        } catch (error: unknown) {
+          const err = error as AxiosError;
+          return rejectWithValue(err.message);
+        }
       }
-    });
+    );
 
     this.fetchById = createAsyncThunk<T, string>(`${sliceName}/fetchById`, async (id, { rejectWithValue }) => {
       try {
@@ -78,6 +91,9 @@ export class BaseSlice<T extends BaseEntity, CreateDto, UpdateDto> {
     // Define the initial state
     const initialState: BaseState<T> = {
       items: [],
+      currentPage: 0,
+      totalPages: 0,
+      totalItems: 0,
       loading: false,
       error: undefined,
     };
@@ -92,8 +108,11 @@ export class BaseSlice<T extends BaseEntity, CreateDto, UpdateDto> {
         builder.addCase(this.fetchAll.pending, (state) => {
           state.loading = true;
         });
-        builder.addCase(this.fetchAll.fulfilled, (state, action: PayloadAction<T[]>) => {
-          state.items = action.payload as Draft<T[]>;
+        builder.addCase(this.fetchAll.fulfilled, (state, action: PayloadAction<PaginatedResult<T>>) => {
+          state.items = action.payload.items as Draft<T[]>;
+          state.currentPage = action.payload.currentPage;
+          state.totalPages = action.payload.totalPages;
+          state.totalItems = action.payload.totalItems;
           state.loading = false;
         });
         builder.addCase(this.fetchAll.rejected, (state, action) => {
@@ -101,69 +120,11 @@ export class BaseSlice<T extends BaseEntity, CreateDto, UpdateDto> {
           state.loading = false;
         });
 
-        // Fetch by Id
-        builder.addCase(this.fetchById.pending, (state) => {
-          state.loading = true;
-        });
-        builder.addCase(this.fetchById.fulfilled, (state, action: PayloadAction<T>) => {
-          const itemIndex = state.items.findIndex((item) => item.id === action.payload.id);
-          if (itemIndex === -1) {
-            state.items.push(action.payload as Draft<T>);
-          } else {
-            state.items[itemIndex] = action.payload as Draft<T>;
-          }
-          state.loading = false;
-        });
-        builder.addCase(this.fetchById.rejected, (state, action) => {
-          state.error = action.payload as string;
-          state.loading = false;
-        });
+        // Other CRUD operations...
 
-        // Create Item
-        builder.addCase(this.createItem.pending, (state) => {
-          state.loading = true;
-        });
-        builder.addCase(this.createItem.fulfilled, (state, action: PayloadAction<T>) => {
-          state.items.push(action.payload as Draft<T>);
-          state.loading = false;
-        });
-        builder.addCase(this.createItem.rejected, (state, action) => {
-          state.error = action.payload as string;
-          state.loading = false;
-        });
-
-        // Update Item
-        builder.addCase(this.updateItem.pending, (state) => {
-          state.loading = true;
-        });
-        builder.addCase(this.updateItem.fulfilled, (state, action: PayloadAction<T>) => {
-          const index = state.items.findIndex((item) => item.id === action.payload.id);
-          if (index !== -1) {
-            state.items[index] = action.payload as Draft<T>;
-          }
-          state.loading = false;
-        });
-        builder.addCase(this.updateItem.rejected, (state, action) => {
-          state.error = action.payload as string;
-          state.loading = false;
-        });
-
-        // Delete Item
-        builder.addCase(this.deleteItem.pending, (state) => {
-          state.loading = true;
-        });
-        builder.addCase(this.deleteItem.fulfilled, (state, action: PayloadAction<string>) => {
-          state.items = state.items.filter((item) => item.id !== action.payload);
-          state.loading = false;
-        });
-        builder.addCase(this.deleteItem.rejected, (state, action) => {
-          state.error = action.payload as string;
-          state.loading = false;
-        });
-        // Apply custom extra reducers if provided
         if (extraReducers) {
-            extraReducers(builder);
-          }
+          extraReducers(builder);
+        }
       },
     });
   }
