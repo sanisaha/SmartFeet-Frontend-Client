@@ -5,6 +5,7 @@ import {
   Bars3Icon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isWomenDropdownOpen, setIsWomenDropdownOpen] = useState(false);
@@ -13,12 +14,20 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle the mobile menu
   const [searchText, setSearchText] = useState("");
 
+  const navigate = useNavigate();
+
   const handleInputChange = (e: any) => {
     setSearchText(e.target.value);
   };
 
   const clearSearch = () => {
     setSearchText("");
+  };
+
+  const navigateToAllShoes = (category: string, subcategory?: string) => {
+    navigate(`/men-shoes`, {
+      state: { category, subcategory }, // Pass category and subcategory in state
+    });
   };
 
   return (
@@ -66,7 +75,11 @@ const Header = () => {
           onMouseEnter={() => setIsWomenDropdownOpen(true)}
           onMouseLeave={() => setIsWomenDropdownOpen(false)}
         >
-          <a href="#" className="text-blue-600 hover:text-red-600">
+          <a
+            href="#"
+            onClick={() => navigateToAllShoes("Women")}
+            className="text-blue-600 hover:text-red-600"
+          >
             WOMEN
           </a>
 
@@ -77,6 +90,7 @@ const Header = () => {
                 <li>
                   <a
                     href="#"
+                    onClick={() => navigateToAllShoes("Women")}
                     className="block px-4 py-2 text-blue-600 hover:bg-gray-100"
                   >
                     All women's shoes
@@ -85,6 +99,7 @@ const Header = () => {
                 <li>
                   <a
                     href="#"
+                    onClick={() => navigateToAllShoes("Women", "Sneakers")}
                     className="block px-4 py-2 text-blue-600 hover:bg-gray-100"
                   >
                     Sneakers

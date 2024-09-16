@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 import { BaseEntity } from "../../models/shared/BaseEntity";
 
 // Paginated result interface
-interface PaginatedResult<T> {
+export interface PaginatedResult<T> {
   items: T[];
   currentPage: number;
   totalPages: number;

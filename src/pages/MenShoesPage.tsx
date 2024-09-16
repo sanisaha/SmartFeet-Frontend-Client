@@ -2,20 +2,46 @@ import React, { useState } from "react";
 import collection2 from "../assets/images/Collection-2.jpg";
 import { AppDispatch, RootState } from "../app/data/store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts } from "../app/data/productSlice";
-import { SizeValue } from "../models/enums/AllEnum";
-import { ProductSize } from "../models/productSize/ProductSize";
+import { fetchFilteredProducts } from "../app/data/productSlice";
+import {
+  CategoryName,
+  SizeValue,
+  SubCategoryName,
+} from "../models/enums/AllEnum";
+import { useLocation } from "react-router-dom";
 
-const categories = ["Men", "Women", "Kids"];
-const subcategories = ["Running", "Formal", "Sports", "Winter"];
-const brands = ["Nike", "Adidas", "Jordan"];
-const sizes = ["Small", "Medium", "Large", "ExtraLarge"];
+export const categories: CategoryName[] = ["Men", "Women", "Kids"];
+export const subcategories: SubCategoryName[] = [
+  "Casual",
+  "Sports",
+  "Formal",
+  "Boots",
+  "Sandals",
+  "Sneakers",
+  "Heels",
+  "Running",
+  "Training",
+  "Comfort",
+  "School",
+];
+const brands = ["Nike", "Adidas", "Puma", "Reebok"];
+const sizes: SizeValue[] = ["Small", "Medium", "Large", "ExtraLarge"];
 
 const MenShoesPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState("Men");
-  const [selectedSubcategory, setSelectedSubcategory] = useState("");
-  const [selectedBrand, setSelectedBrand] = useState("");
-  const [selectedSize, setSelectedSize] = useState<string | "">("");
+  const location = useLocation();
+  const { category, subcategory } = location.state || {};
+  const [selectedCategory, setSelectedCategory] = useState<CategoryName>(
+    category || "Men"
+  );
+  const [selectedSubcategory, setSelectedSubcategory] = useState<
+    SubCategoryName | undefined
+  >(subcategory);
+  const [selectedBrand, setSelectedBrand] = useState<string | undefined>(
+    undefined
+  );
+  const [selectedSize, setSelectedSize] = useState<SizeValue | undefined>(
+    undefined
+  );
   const dispatch: AppDispatch = useDispatch();
   const {
     items: products,
@@ -24,11 +50,26 @@ const MenShoesPage = () => {
   } = useSelector((state: RootState) => state.products);
 
   React.useEffect(() => {
-    dispatch(fetchProducts(1, 10));
-  }, [dispatch]);
+    dispatch(
+      fetchFilteredProducts({
+        page: 1,
+        pageSize: 10,
+        category: selectedCategory,
+        subcategory: selectedSubcategory,
+        brand: selectedBrand,
+        size: selectedSize,
+      })
+    );
+  }, [
+    dispatch,
+    selectedCategory,
+    selectedSubcategory,
+    selectedBrand,
+    selectedSize,
+  ]);
 
   console.log(products);
-  // Filter logic based on selected filters
+  /*   // Filter logic based on selected filters
   const filteredShoes = products.filter((shoe) => {
     if (shoe.CategoryName !== selectedCategory) return false;
     if (selectedSubcategory && shoe.SubCategoryName !== selectedSubcategory)
@@ -40,7 +81,7 @@ const MenShoesPage = () => {
     )
       return false;
     return true;
-  });
+  }); */
 
   return (
     <div>
@@ -94,7 +135,9 @@ const MenShoesPage = () => {
                 checked={selectedSubcategory === subcategory}
                 onChange={() =>
                   setSelectedSubcategory(
-                    selectedSubcategory === subcategory ? "" : subcategory
+                    selectedSubcategory === subcategory
+                      ? undefined
+                      : subcategory
                   )
                 }
               />
@@ -130,7 +173,7 @@ const MenShoesPage = () => {
                   selectedSize === size ? "bg-black text-white" : "bg-white"
                 }`}
                 onClick={() =>
-                  setSelectedSize(selectedSize === size ? "" : size)
+                  setSelectedSize(selectedSize === size ? undefined : size)
                 }
               >
                 {size}
@@ -142,8 +185,8 @@ const MenShoesPage = () => {
         {/* Right Content - Shoe Grid */}
         <div className="w-3/4 p-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {filteredShoes.length > 0 ? (
-              filteredShoes.map((shoe) => (
+            {products.length > 0 ? (
+              products.map((shoe) => (
                 <div
                   key={shoe.id}
                   className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
