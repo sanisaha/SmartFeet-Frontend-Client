@@ -1,3 +1,5 @@
+
+import { CategoryName, SubCategoryName } from "../enums/AllEnum";
 import { ProductColorCreateDto, ProductColorReadDto } from "../productColor/productColorDto";
 import { ProductImageCreateDto, ProductImageReadDto } from "../productImage/productImageDto";
 import { ProductSizeCreateDto, ProductSizeReadDto } from "../productSize/productSizeDto";
@@ -12,6 +14,9 @@ export interface ProductReadDto {
     brandName?: string;     // Optional because it can be null
     discount?: number;      // Optional because it can be null
     oldPrice?: number;      // Optional because it can be null
+    IsFeatured: boolean;
+    CategoryName: CategoryName;
+    subCategoryName: SubCategoryName;
     productImages: ProductImageReadDto[];
     productSizes: ProductSizeReadDto[];
     productColors: ProductColorReadDto[];
@@ -27,6 +32,9 @@ export interface ProductCreateDto {
     brandName?: string;     // Optional because it can be null
     discount?: number;      // Optional because it can be null
     oldPrice?: number;      // Optional because it can be null
+    IsFeatured: boolean;
+    CategoryName: CategoryName;
+    subCategoryName: SubCategoryName;
     productImages: ProductImageCreateDto[];
     productSizes: ProductSizeCreateDto[];
     productColors: ProductColorCreateDto[];
@@ -42,4 +50,7 @@ export interface ProductUpdateDto {
     brandName?: string;     // Optional because it can be null
     discount?: number;      // Optional because it can be null
     oldPrice?: number;      // Optional because it can be null
+    IsFeatured: boolean;
+    CategoryName: CategoryName;
+    subCategoryName: SubCategoryName;
 }

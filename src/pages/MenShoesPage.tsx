@@ -1,80 +1,44 @@
 import React, { useState } from "react";
 import collection2 from "../assets/images/Collection-2.jpg";
-
-// Sample shoe data
-const shoes = [
-  {
-    id: 1,
-    name: "Air Jordan 7 Retro",
-    brand: "Nike",
-    category: "Men",
-    subcategory: "Sports",
-    price: 120,
-    sizes: [8, 9, 10, 11, 12],
-    oldPrice: 220,
-    discount: "35%",
-  },
-  {
-    id: 2,
-    name: "Adidas Ultraboost",
-    brand: "Adidas",
-    category: "Men",
-    subcategory: "Running",
-    price: 180,
-    sizes: [7, 8, 9, 10, 11],
-    discount: "20%",
-  },
-  {
-    id: 3,
-    name: "Nike Air Max",
-    brand: "Nike",
-    category: "Men",
-    subcategory: "Formal",
-    price: 200,
-    sizes: [8, 9, 10, 11, 12],
-  },
-  {
-    id: 4,
-    name: "Adidas NMD",
-    brand: "Adidas",
-    category: "Women",
-    subcategory: "Running",
-    price: 150,
-    sizes: [6, 7, 8, 9, 10],
-  },
-  {
-    id: 5,
-    name: "Nike Revolution",
-    brand: "Nike",
-    category: "Kids",
-    subcategory: "Sports",
-    price: 90,
-    sizes: [3, 4, 5, 6, 7],
-  },
-  // Add more shoe items as necessary
-];
+import { AppDispatch, RootState } from "../app/data/store";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../app/data/productSlice";
+import { SizeValue } from "../models/enums/AllEnum";
+import { ProductSize } from "../models/productSize/ProductSize";
 
 const categories = ["Men", "Women", "Kids"];
 const subcategories = ["Running", "Formal", "Sports", "Winter"];
 const brands = ["Nike", "Adidas", "Jordan"];
-const sizes = [
-  3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5,
-  12, 12.5, 13,
-];
+const sizes = ["Small", "Medium", "Large", "ExtraLarge"];
 
 const MenShoesPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Men");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
-  const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | "">("");
+  const dispatch: AppDispatch = useDispatch();
+  const {
+    items: products,
+    loading,
+    error,
+  } = useSelector((state: RootState) => state.products);
 
+  React.useEffect(() => {
+    dispatch(fetchProducts(1, 10));
+  }, [dispatch]);
+
+  console.log(products);
   // Filter logic based on selected filters
-  const filteredShoes = shoes.filter((shoe) => {
-    if (shoe.category !== selectedCategory) return false;
-    if (selectedSubcategory && shoe.subcategory !== selectedSubcategory)
+  const filteredShoes = products.filter((shoe) => {
+    if (shoe.CategoryName !== selectedCategory) return false;
+    if (selectedSubcategory && shoe.SubCategoryName !== selectedSubcategory)
       return false;
-    if (selectedBrand && shoe.brand !== selectedBrand) return false;
-    if (selectedSize && !shoe.sizes.includes(selectedSize)) return false;
+    if (selectedBrand && shoe.brandName !== selectedBrand) return false;
+    if (
+      selectedSize &&
+      !shoe.productSizes.some((size) => size.sizeValue === selectedSize)
+    )
+      return false;
     return true;
   });
 
@@ -134,7 +98,7 @@ const MenShoesPage = () => {
                   )
                 }
               />
-              <label text-gray-700>{subcategory}</label>
+              <label className="text-gray-700">{subcategory}</label>
             </div>
           ))}
           <hr className="my-4 border-t-2 border-gray-300" />
@@ -151,7 +115,7 @@ const MenShoesPage = () => {
                   setSelectedBrand(selectedBrand === brand ? "" : brand)
                 }
               />
-              <label text-gray-700>{brand}</label>
+              <label className="text-gray-700">{brand}</label>
             </div>
           ))}
           <hr className="my-4 border-t-2 border-gray-300" />
@@ -166,7 +130,7 @@ const MenShoesPage = () => {
                   selectedSize === size ? "bg-black text-white" : "bg-white"
                 }`}
                 onClick={() =>
-                  setSelectedSize(selectedSize === size ? null : size)
+                  setSelectedSize(selectedSize === size ? "" : size)
                 }
               >
                 {size}
@@ -190,13 +154,13 @@ const MenShoesPage = () => {
                     </span>
                     <img
                       src={collection2}
-                      alt={shoe.name}
+                      alt={shoe.title}
                       className="w-full h-48 object-cover"
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="font-semibold text-lg">{shoe.name}</h3>
-                    <p className="text-gray-500 text-sm">{shoe.brand}</p>
+                    <h3 className="font-semibold text-lg">{shoe.title}</h3>
+                    <p className="text-gray-500 text-sm">{shoe.brandName}</p>
                     <div className="mt-2">
                       {shoe.oldPrice && (
                         <span className="text-gray-500 line-through mr-2">

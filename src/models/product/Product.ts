@@ -1,3 +1,4 @@
+import { CategoryName, SubCategoryName } from './../enums/AllEnum';
 import { OrderItem } from "../orderItem/OrderItem";
 import { ProductColor } from "../productColor/ProductColor";
 import { ProductImage } from "../productImage/ProductImage";
@@ -15,6 +16,9 @@ export interface Product extends BaseEntity {
     brandName?: string;  // Optional
     discount?: number;  // Optional
     oldPrice?: number;  // Optional
+    IsFeatured: boolean;  // Required
+    CategoryName: CategoryName;  // Required
+    SubCategoryName: SubCategoryName;  // Required
     orderItems: OrderItem[];  // Assuming you have an OrderItem interface/type defined
     reviews: Review[];  // Assuming you have a Review interface/type defined
     subCategory?: SubCategory;  // Optional, assuming SubCategory is an interface/type
