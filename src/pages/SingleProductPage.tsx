@@ -8,6 +8,8 @@ import {
   fetchProductsBySubCategory,
 } from "../app/data/productSlice";
 import { useParams } from "react-router-dom";
+import { addItemToCart } from "../app/data/cartSlice";
+import { toast } from "react-toastify";
 
 const ProductPage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -40,25 +42,42 @@ const ProductPage = () => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   // Handle quantity increment and decrement
-  const handleQuantityChange = (type: any) => {
-    if (type === "increase") {
-      setQuantity(quantity + 1);
-    } else if (type === "decrease" && quantity > 1) {
-      setQuantity(quantity - 1);
+  const handleQuantityChange = (type: string) => {
+    if (selectedSize) {
+      // Find the product size information from the product data
+      const productSize = product?.productSizes.find(
+        (sizeInfo) => sizeInfo.sizeValue === selectedSize
+      );
+
+      if (type === "increase" && productSize) {
+        if (quantity >= productSize.quantity) {
+          toast.warn(
+            `Only ${productSize.quantity} items available for size ${selectedSize}`
+          );
+          return; // Prevent incrementing beyond available quantity
+        }
+        setQuantity(quantity + 1);
+      } else if (type === "decrease" && quantity > 1) {
+        setQuantity(quantity - 1);
+      }
+    } else {
+      toast.error("Please select a size first");
     }
   };
 
   const handleAddToCart = () => {
     if (product && selectedColor && selectedSize) {
-      // Add product to cart logic here
-      console.log("Adding to cart:", {
-        productId: product.id,
-        quantity,
-        color: selectedColor,
-        size: selectedSize,
-      });
+      dispatch(
+        addItemToCart({
+          product,
+          quantity,
+          color: selectedColor,
+          size: selectedSize,
+        })
+      );
+      toast.success("Product added to cart");
     } else {
-      console.log("Please select a color and size.");
+      toast.error("Please select color and size");
     }
   };
 

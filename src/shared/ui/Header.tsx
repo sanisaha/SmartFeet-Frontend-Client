@@ -5,10 +5,11 @@ import {
   Bars3Icon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CategoryName, SubCategoryName } from "../../models/enums/AllEnum";
 import Dropdown from "../services/Dropdown";
 import { categories, subcategories } from "../../pages/ShoesPage";
+import { FaCartArrowDown } from "react-icons/fa";
 
 const Header = () => {
   const [dropdownStates, setDropdownStates] = useState({
@@ -134,25 +135,12 @@ const Header = () => {
           </svg>
         </a>
 
-        <a href="#" className="relative text-gray-600 hover:text-red-600">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="h-6 w-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M3 3h2l.401 2m1.978 8H20l.929-5.571A1 1 0 0020 6H7.407M7.38 10h10.788m-9.502 4a2 2 0 100 4 2 2 0 000-4zm9 0a2 2 0 100 4 2 2 0 000-4zm-9-10h6a2 2 0 012 2v1m0 4a2 2 0 11-4 0"
-            />
-          </svg>
-          <span className="absolute top-0 right-0 inline-block w-4 h-4 bg-red-600 text-white text-xs font-bold text-center rounded-full">
-            3
+        <Link to="/cart" className="relative text-gray-600 hover:text-red-600">
+          <FaCartArrowDown />
+          <span className="absolute top-0 left-5 inline-block w-4 h-4 bg-red-600 text-white text-xs font-bold text-center rounded-full">
+            0
           </span>
-        </a>
+        </Link>
       </div>
 
       {/* Mobile Menu (Visible on small screens) */}
