@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import collection2 from "../assets/images/Collection-2.jpg";
 import RelatedItems from "../shared/ui/RelatedItems";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/data/store";
-import { fetchProductById } from "../app/data/productSlice";
+import {
+  fetchProductById,
+  fetchProductsBySubCategory,
+} from "../app/data/productSlice";
 import { useParams } from "react-router-dom";
 
 const ProductPage = () => {
   const dispatch: AppDispatch = useDispatch();
   const {
     items: products,
+    relatedItems,
     loading,
     error,
   } = useSelector((state: RootState) => state.products);
@@ -21,9 +25,13 @@ const ProductPage = () => {
     }
   }, [dispatch, id]);
 
-  const product = products.find((product) => product.id === id);
+  useEffect(() => {
+    if (products?.length > 0) {
+      dispatch(fetchProductsBySubCategory(products[0].subCategoryId));
+    }
+  }, [dispatch, products]);
 
-  console.log(product);
+  const product = products.find((product) => product.id === id);
 
   // State for quantity and selected tab
   const [quantity, setQuantity] = useState(1);
@@ -238,7 +246,7 @@ const ProductPage = () => {
       </div>
 
       {/* Related Products Section */}
-      <RelatedItems />
+      <RelatedItems products={relatedItems} />
     </div>
   );
 };

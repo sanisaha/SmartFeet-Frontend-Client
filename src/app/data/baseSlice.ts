@@ -12,6 +12,7 @@ export interface PaginatedResult<T> {
 
 export interface BaseState<T extends BaseEntity> {
   items: T[];
+  relatedItems: T[];
   currentPage: number;
   totalPages: number;
   totalItems: number;
@@ -91,6 +92,7 @@ export class BaseSlice<T extends BaseEntity, CreateDto, UpdateDto> {
     // Define the initial state
     const initialState: BaseState<T> = {
       items: [],
+      relatedItems: [],
       currentPage: 0,
       totalPages: 0,
       totalItems: 0,
