@@ -8,7 +8,7 @@ import {
   SizeValue,
   SubCategoryName,
 } from "../models/enums/AllEnum";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ProductHeader from "../shared/ui/ProductHeader";
 
 export const categories: CategoryName[] = ["Men", "Women", "Kids"];
@@ -69,20 +69,11 @@ const ShoesPage = () => {
     selectedSize,
   ]);
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   console.log(products);
-  /*   // Filter logic based on selected filters
-  const filteredShoes = products.filter((shoe) => {
-    if (shoe.CategoryName !== selectedCategory) return false;
-    if (selectedSubcategory && shoe.SubCategoryName !== selectedSubcategory)
-      return false;
-    if (selectedBrand && shoe.brandName !== selectedBrand) return false;
-    if (
-      selectedSize &&
-      !shoe.productSizes.some((size) => size.sizeValue === selectedSize)
-    )
-      return false;
-    return true;
-  }); */
 
   return (
     <div>
@@ -197,11 +188,14 @@ const ShoesPage = () => {
                     <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded">
                       {shoe.discount}
                     </span>
-                    <img
-                      src={collection2}
-                      alt={shoe.title}
-                      className="w-full h-48 object-cover"
-                    />
+                    <Link to={`/shoes/${shoe.id}`}>
+                      <img
+                        src={collection2}
+                        alt={shoe.title}
+                        className="w-full h-48 object-cover"
+                        loading="lazy"
+                      />
+                    </Link>
                   </div>
                   <div className="p-4">
                     <h3 className="font-semibold text-lg">{shoe.title}</h3>

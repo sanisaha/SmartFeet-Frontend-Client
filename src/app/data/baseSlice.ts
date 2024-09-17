@@ -119,6 +119,18 @@ export class BaseSlice<T extends BaseEntity, CreateDto, UpdateDto> {
           state.error = action.payload as string;
           state.loading = false;
         });
+        builder.addCase(this.fetchById.pending, (state) => {
+            state.loading = true;
+            });
+        builder.addCase(this.fetchById.fulfilled, (state, action: PayloadAction<T>) => {
+            state.items = [action.payload as Draft<T>];
+            state.loading = false;
+            });
+        builder.addCase(this.fetchById.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.loading = false;
+            });
+        
 
         // Other CRUD operations...
 

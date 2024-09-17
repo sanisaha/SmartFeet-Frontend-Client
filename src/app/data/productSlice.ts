@@ -92,4 +92,5 @@ export const {
   createItem: createProduct,
   updateItem: updateProduct,
   deleteItem: deleteProduct,
+  fetchById: fetchProductById,
 } = productSlice;
