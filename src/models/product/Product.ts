@@ -16,7 +16,7 @@ export interface Product extends BaseEntity {
     brandName?: string;  // Optional
     discount?: number;  // Optional
     oldPrice?: number;  // Optional
-    IsFeatured: boolean;  // Required
+    isFeatured: boolean;  // Required
     categoryName: CategoryName;  // Required
     subCategoryName: SubCategoryName;  // Required
     orderItems: OrderItem[];  // Assuming you have an OrderItem interface/type defined

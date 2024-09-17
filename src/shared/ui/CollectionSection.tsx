@@ -1,12 +1,12 @@
 import React from "react";
 import collection1 from "../../assets/images/Collection-1.jpg";
 import collection2 from "../../assets/images/Collection-2.jpg";
+import { Link } from "react-router-dom";
 
 const CollectionSection = () => {
   return (
     <div className="bg-gray-100 py-8 px-4 sm:px-6 lg:px-8 flex justify-center">
       <div className="grid grid-cols-2 grid-rows-2 gap-0 relative w-3/4 h-[700px]">
-        {/* Image 1: High Heel */}
         <div className="col-span-1 row-span-1 relative overflow-hidden">
           <img
             src={collection1}
@@ -15,37 +15,44 @@ const CollectionSection = () => {
           />
         </div>
 
-        {/* Text 1: High Heel */}
         <div className="col-span-1 row-span-1 flex flex-col justify-center px-6 bg-white rounded-tl-lg">
           <h4 className="text-xs uppercase font-semibold text-gray-500">
-            Sky Blue Vanishing Touches
+            Elegant Craftsmanship
           </h4>
-          <h2 className="text-xl font-bold mt-1">Modern High Heel Brand</h2>
+          <h2 className="text-xl font-bold mt-1">
+            Classic Formal Leather Shoes
+          </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Auctor augue mauris augue neque gravida. Risus at ultrices mi tempus
-            imperdiet nulla malesuada.
+            Impeccably crafted with a timeless design, these formal shoes
+            combine style and comfort for the modern professional.
           </p>
-          <button className="mt-4 bg-beige-500 text-black font-semibold py-2 px-4 rounded">
-            View collections
-          </button>
+          <Link
+            to="/shoes"
+            className="w-1/2 mt-4 bg-black text-white font-semibold py-2 px-6 rounded-lg shadow-lg hover:bg-gray-800 transition duration-300 ease-in-out transform hover:scale-105"
+          >
+            Explore the collection
+          </Link>
         </div>
 
-        {/* Text 2: Handbag */}
         <div className="col-span-1 row-span-1 flex flex-col justify-center px-6 bg-white rounded-bl-lg">
           <h4 className="text-xs uppercase font-semibold text-gray-500">
-            New from True Brand
+            Fresh & Urban
           </h4>
-          <h2 className="text-xl font-bold mt-1">Gold Sea Beach Colors</h2>
+          <h2 className="text-xl font-bold mt-1">
+            Contemporary Streetwear Sneakers
+          </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Ac tortor vitae purus faucibus ornare suspendisse. Sodales ut etiam
-            sit amet. Odio ut sem nulla pharetra.
+            Designed for those who blend style with comfort, these sneakers
+            boast a sleek modern look with cutting-edge details.
           </p>
-          <button className="mt-4 bg-beige-500 text-black font-semibold py-2 px-4 rounded">
-            View all collections
-          </button>
+          <Link
+            to="/shoes"
+            className="w-1/2 mt-4 bg-gradient-to-r from-orange-800 to-orange-950 text-white font-semibold py-2 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105"
+          >
+            Discover the range
+          </Link>
         </div>
 
-        {/* Image 2: Handbag */}
         <div className="col-span-1 row-span-1 relative overflow-hidden">
           <img
             src={collection2}

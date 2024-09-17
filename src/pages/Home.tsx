@@ -5,16 +5,28 @@ import NewArrivals from "../shared/ui/NewArrivals";
 import FeaturedSection from "../shared/ui/FeaturedSection";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/data/store";
-import { Product } from "../models/product/Product";
-import { fetchProducts } from "../app/data/productSlice";
+import {
+  fetchProductsByFeatured,
+  fetchProductsByNewArrival,
+} from "../app/data/productSlice";
 
 const Home = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const { newArrivals, featuredProducts } = useSelector(
+    (state: RootState) => state.products
+  );
+
+  React.useEffect(() => {
+    dispatch(fetchProductsByNewArrival());
+    dispatch(fetchProductsByFeatured());
+  }, [dispatch]);
+
   return (
     <div>
       <Carousel />
-      <NewArrivals />
+      <NewArrivals newArrivals={newArrivals} />
       <CollectionSection />
-      <FeaturedSection />
+      <FeaturedSection featuredProducts={featuredProducts} />
     </div>
   );
 };

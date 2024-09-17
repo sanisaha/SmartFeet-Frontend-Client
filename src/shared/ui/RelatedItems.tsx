@@ -35,14 +35,19 @@ const RelatedItems: React.FC<RelatedItemsProps> = ({ products }) => {
                 />
               </Link>
               <div className="text-left">
-                {product.IsFeatured && (
+                {product.isFeatured && (
                   <span className="bg-green-500 text-white px-2 py-1 rounded-lg text-xs font-bold">
-                    New
+                    Trending
                   </span>
                 )}
-                {product.discount && (
+                {product.oldPrice && (
                   <span className="bg-red-500 text-white px-2 py-1 rounded-lg text-xs font-bold ml-2">
-                    -{product.discount}%
+                    -
+                    {Math.round(
+                      ((product.oldPrice - product.price) / product.oldPrice) *
+                        100
+                    )}
+                    %
                   </span>
                 )}
                 <h3 className="text-lg font-semibold mt-2">{product.title}</h3>
@@ -50,10 +55,10 @@ const RelatedItems: React.FC<RelatedItemsProps> = ({ products }) => {
                   {product.categoryName}, {product.brandName}
                 </p>
                 <div className="flex items-center justify-between mt-2">
-                  <p className="text-xl font-bold">£ {product.price}</p>
+                  <p className="text-xl font-bold">€ {product.price}</p>
                   {product.oldPrice && (
                     <p className="line-through text-sm text-gray-400">
-                      £ {product.oldPrice}
+                      € {product.oldPrice}
                     </p>
                   )}
                 </div>

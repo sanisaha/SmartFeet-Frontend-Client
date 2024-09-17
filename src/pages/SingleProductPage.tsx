@@ -143,7 +143,7 @@ const ProductPage = () => {
             </span>
           </div>
 
-          <p className="text-2xl font-semibold mt-4">${product.price}</p>
+          <p className="text-2xl font-semibold mt-4">€{product.price}</p>
 
           <div className="mt-6">
             <label className="block mb-2 text-sm font-medium text-gray-700">

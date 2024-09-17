@@ -1,77 +1,26 @@
 import React, { useState } from "react";
 import collection2 from "../../assets/images/Collection-2.jpg";
-
-// Sample products
-const shoes = [
-  {
-    id: 1,
-    title: "Nike Air Max",
-    brand: "Nike",
-    category: "Men",
-    price: "$200",
-    rating: 4.5,
-    image: "path-to-nike-1.jpg",
-  },
-  {
-    id: 2,
-    title: "Adidas Ultraboost",
-    brand: "Adidas",
-    category: "Women",
-    price: "$180",
-    rating: 4.8,
-    image: "path-to-adidas-1.jpg",
-  },
-  {
-    id: 3,
-    title: "Nike Revolution",
-    brand: "Nike",
-    category: "Kids",
-    price: "$90",
-    rating: 4.2,
-    image: "path-to-nike-2.jpg",
-  },
-  {
-    id: 4,
-    title: "Adidas NMD",
-    brand: "Adidas",
-    category: "Men",
-    price: "$150",
-    rating: 4.6,
-    image: "path-to-adidas-2.jpg",
-  },
-  {
-    id: 5,
-    title: "Nike Flex",
-    brand: "Nike",
-    category: "Women",
-    price: "$120",
-    rating: 4.5,
-    image: "path-to-nike-3.jpg",
-  },
-  {
-    id: 6,
-    title: "Adidas Superstar",
-    brand: "Adidas",
-    category: "Kids",
-    price: "$100",
-    rating: 4.4,
-    image: "path-to-adidas-3.jpg",
-  },
-  // Add more shoes as needed
-];
+import { Product } from "../../models/product/Product";
+import { Link } from "react-router-dom";
 
 const categories = ["All", "Nike", "Adidas", "Men", "Women", "Kids"];
 
-const FeaturedSection = () => {
+interface FeaturedSectionProps {
+  featuredProducts: Product[];
+}
+
+const FeaturedSection: React.FC<FeaturedSectionProps> = ({
+  featuredProducts,
+}) => {
   const [filteredCategory, setFilteredCategory] = useState("All");
 
   // Filter logic
-  const filteredShoes = shoes.filter((shoe) => {
+  const filteredShoes = featuredProducts.filter((shoe) => {
     if (filteredCategory === "All") return true;
     if (filteredCategory === "Nike" || filteredCategory === "Adidas") {
-      return shoe.brand === filteredCategory;
+      return shoe.brandName === filteredCategory;
     }
-    return shoe.category === filteredCategory;
+    return shoe.categoryName === filteredCategory;
   });
 
   return (
@@ -113,60 +62,68 @@ const FeaturedSection = () => {
 
       {/* Shoe Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-        {filteredShoes.map((shoe) => (
-          <div
-            key={shoe.id}
-            className="relative group bg-white overflow-hidden rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-500 ease-in-out"
-          >
-            {/* Product Image */}
-            <img
-              src={collection2}
-              alt={shoe.title}
-              className="w-full h-96 object-cover" // Full-width image with taller height
-            />
+        {filteredShoes.map((shoe) => {
+          const totalReviews = shoe.reviews.length;
+          const averageRating =
+            totalReviews > 0
+              ? Math.ceil(
+                  shoe.reviews.reduce((sum, review) => sum + review.rating, 0) /
+                    totalReviews
+                )
+              : 0;
+          return (
+            <div
+              key={shoe.id}
+              className="relative group bg-white overflow-hidden rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-500 ease-in-out"
+            >
+              {shoe.oldPrice && (
+                <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded">
+                  -
+                  {Math.round(
+                    ((shoe.oldPrice - shoe.price) / shoe.oldPrice) * 100
+                  )}
+                  %
+                </span>
+              )}
+              {/* Product Image */}
+              <Link to={`/shoes/${shoe.id}`} className="block">
+                <img
+                  src={collection2}
+                  alt={shoe.title}
+                  className="w-full h-96 object-cover z-10" // Ensuring the image is on top
+                />
+              </Link>
 
-            {/* Hover Border Effect */}
-            <div className="absolute inset-0 border-2 border-transparent group-hover:border-black p-1 transition-all duration-500 ease-in-out"></div>
+              {/* Hover Border Effect */}
+              <div className="absolute inset-0 border-2 border-transparent group-hover:border-black p-1 transition-all duration-500 ease-in-out pointer-events-none"></div>
 
-            {/* Card Content */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 bg-white bg-opacity-80 group-hover:bg-opacity-100 transition-all duration-300 ease-in-out flex justify-between items-end">
-              {/* Rating, Title, Category */}
-              <div>
-                {/* Rating */}
-                <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill={i < Math.floor(shoe.rating) ? "gold" : "none"}
-                      viewBox="0 0 24 24"
-                      stroke="gold"
-                      strokeWidth="2"
-                      className="w-4 h-4"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-                      />
-                    </svg>
-                  ))}
+              {/* Card Content */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-white bg-opacity-80 group-hover:bg-opacity-100 transition-all duration-300 ease-in-out flex justify-between items-end z-20">
+                {/* Rating, Title, Category */}
+                <div>
+                  {/* Rating */}
+                  <div className="flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="text-yellow-400">
+                      {"★".repeat(averageRating)}
+                      {"☆".repeat(5 - averageRating)}
+                    </div>
+                  </div>
+
+                  {/* Title and Category */}
+                  <div className="mt-1 text-left">
+                    <h3 className="text-md font-semibold">{shoe.title}</h3>
+                    <p className="text-sm text-gray-600">{shoe.categoryName}</p>
+                  </div>
                 </div>
 
-                {/* Title and Category */}
-                <div className="mt-1 text-left">
-                  <h3 className="text-md font-semibold">{shoe.title}</h3>
-                  <p className="text-sm text-gray-600">{shoe.category}</p>
+                {/* Price */}
+                <div className="text-right">
+                  <p className="text-lg font-bold">€{shoe.price}</p>
                 </div>
-              </div>
-
-              {/* Price */}
-              <div className="text-right">
-                <p className="text-lg font-bold">{shoe.price}</p>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

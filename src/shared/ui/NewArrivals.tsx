@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import collection1 from "../../assets/images/Collection-1.jpg";
+import { Product } from "../../models/product/Product";
+import { Link } from "react-router-dom";
+import { FaForward } from "react-icons/fa6";
+import { FaBackward } from "react-icons/fa";
 
 // Sample data for new arrivals
 const newArrivals = [
@@ -54,8 +58,10 @@ const newArrivals = [
   },
   // Add more items as needed
 ];
-
-const NewArrivals = () => {
+interface NewArrivalsProps {
+  newArrivals: Product[];
+}
+const NewArrivals: React.FC<NewArrivalsProps> = ({ newArrivals }) => {
   const [startIndex, setStartIndex] = useState(0);
   const itemsPerPage = 3;
 
@@ -91,17 +97,19 @@ const NewArrivals = () => {
               key={product.id}
               className="w-1/4 p-4 bg-white border border-gray-300 rounded-lg shadow hover:shadow-lg transition-shadow transform hover:scale-105 transition-transform duration-300 ease-in-out"
             >
-              <img
-                src={collection1}
-                alt={product.title}
-                className="w-full h-60 object-cover rounded-t-lg mb-4 transition-transform duration-300 ease-in-out transform hover:scale-110"
-              />
+              <Link to={`/shoes/${product.id}`}>
+                <img
+                  src={collection1}
+                  alt={product.title}
+                  className="w-full h-60 object-cover rounded-t-lg mb-4 transition-transform duration-300 ease-in-out transform hover:scale-110"
+                />
+              </Link>
               <div className="text-center">
                 <h3 className="text-lg font-semibold">{product.title}</h3>
-                <p className="text-gray-500">{product.category}</p>
+                <p className="text-gray-500">{product.categoryName}</p>
                 <div className="my-2 border-t border-dashed border-gray-300 w-3/4 mx-auto"></div>{" "}
                 {/* Dashed Line */}
-                <p className="text-xl font-bold">{product.price}</p>
+                <p className="text-xl font-bold">€{product.price}</p>
               </div>
             </div>
           ))}
@@ -114,14 +122,18 @@ const NewArrivals = () => {
           className="bg-gray-300 p-3 rounded-full hover:bg-gray-400 focus:outline-none disabled:opacity-50"
           disabled={startIndex === 0}
         >
-          <span className="material-icons">arrow_back</span>
+          <span className="material-icons">
+            <FaBackward />
+          </span>
         </button>
         <button
           onClick={handleNext}
           className="bg-gray-300 p-3 rounded-full hover:bg-gray-400 focus:outline-none disabled:opacity-50"
           disabled={startIndex + itemsPerPage >= newArrivals.length}
         >
-          <span className="material-icons">arrow_forward</span>
+          <span className="material-icons">
+            <FaForward />
+          </span>
         </button>
       </div>
     </div>
