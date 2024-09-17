@@ -1,27 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import collection2 from "../assets/images/Collection-2.jpg";
 import RelatedItems from "../shared/ui/RelatedItems";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../app/data/store";
+import {
+  fetchProductById,
+  fetchProductsBySubCategory,
+} from "../app/data/productSlice";
+import { useParams } from "react-router-dom";
 
 const ProductPage = () => {
-  const product = {
-    name: "High Heel",
-    price: 600.0,
-    description:
-      "These elegant high heels feature a unique design with premium materials, perfect for any special occasion.",
-    image: "https://via.placeholder.com/300",
-    images: [
-      "https://via.placeholder.com/100",
-      "https://via.placeholder.com/100",
-      "https://via.placeholder.com/100",
-    ],
-    colors: ["#2F4F4F", "#4682B4", "#FFB6C1"],
-    sizes: [7, 8, 9],
-    vendor: "Wedge",
-    type: "Wedge Sandals",
-  };
+  const dispatch: AppDispatch = useDispatch();
+  const {
+    items: products,
+    relatedItems,
+    loading,
+    error,
+  } = useSelector((state: RootState) => state.products);
+  const { id } = useParams();
+
+  React.useEffect(() => {
+    if (id) {
+      dispatch(fetchProductById(id));
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (products?.length > 0) {
+      dispatch(fetchProductsBySubCategory(products[0].subCategoryId));
+    }
+  }, [dispatch, products]);
+
+  const product = products.find((product) => product.id === id);
+
   // State for quantity and selected tab
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   // Handle quantity increment and decrement
   const handleQuantityChange = (type: any) => {
@@ -32,6 +48,40 @@ const ProductPage = () => {
     }
   };
 
+  const handleAddToCart = () => {
+    if (product && selectedColor && selectedSize) {
+      // Add product to cart logic here
+      console.log("Adding to cart:", {
+        productId: product.id,
+        quantity,
+        color: selectedColor,
+        size: selectedSize,
+      });
+    } else {
+      console.log("Please select a color and size.");
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+  if (!product) {
+    return <div>No product found</div>;
+  }
+
+  // Calculate average rating and review count
+  const totalReviews = product.reviews.length;
+  const averageRating =
+    totalReviews > 0
+      ? Math.ceil(
+          product.reviews.reduce((sum, review) => sum + review.rating, 0) /
+            totalReviews
+        )
+      : 0;
+
   // Render content based on the active tab
   const renderTabContent = () => {
     if (activeTab === "description") {
@@ -40,18 +90,20 @@ const ProductPage = () => {
       return (
         <div>
           <h2 className="text-xl font-bold">Customer Reviews</h2>
-          <div className="flex items-center mt-2">
-            <div className="text-yellow-400 text-lg">★★★★★</div>
-            <span className="ml-2 text-sm text-gray-600">5.00 out of 5</span>
-          </div>
-          <p className="mt-2 text-sm text-gray-600">Based on 1 review</p>
-
-          <div className="mt-4">
-            <h3 className="font-semibold">John</h3>
-            <div className="text-yellow-400">★★★★★</div>
-            <p className="mt-2 text-gray-600">Cursus metus aliquam eleifend.</p>
-            <p className="text-sm text-gray-500">05/03/2023</p>
-          </div>
+          {product.reviews.length === 0 ? (
+            <p>No reviews yet</p>
+          ) : (
+            product.reviews.map((review, index) => (
+              <div key={index} className="mt-4">
+                <h3 className="font-semibold">{"author"}</h3>
+                <div className="text-yellow-400">
+                  {`★`.repeat(review.rating)}
+                </div>
+                <p className="mt-2 text-gray-600">{review.reviewText}</p>
+                <p className="text-sm text-gray-500">{"review.reviewDate"}</p>
+              </div>
+            ))
+          )}
         </div>
       );
     }
@@ -63,11 +115,11 @@ const ProductPage = () => {
       <div className="flex flex-col md:flex-row">
         {/* Product Image */}
         <div className="w-full md:w-1/2">
-          <img src={collection2} alt={product.name} className="rounded-lg" />
+          <img src={collection2} alt={product.title} className="rounded-lg" />
 
           {/* Image Thumbnails */}
           <div className="flex space-x-4 mt-4">
-            {product.images.map((image, index) => (
+            {product.productImages.map((image, index) => (
               <img
                 key={index}
                 src={collection2}
@@ -80,27 +132,34 @@ const ProductPage = () => {
 
         {/* Product Details */}
         <div className="w-full md:w-1/2 px-6 mt-6 md:mt-0">
-          <h1 className="text-2xl font-bold">{product.name}</h1>
+          <h1 className="text-2xl font-bold">{product.title}</h1>
           <div className="flex items-center">
             <div className="text-yellow-400">
-              {/* Rating stars */}
-              ★★★★★
+              {"★".repeat(averageRating)}
+              {"☆".repeat(5 - averageRating)}
             </div>
-            <span className="ml-2 text-sm text-gray-600">(1 review)</span>
+            <span className="ml-2 text-sm text-gray-600">
+              ({totalReviews} review{totalReviews !== 1 ? "s" : ""})
+            </span>
           </div>
 
-          <p className="text-2xl font-semibold mt-4">${product.price}</p>
+          <p className="text-2xl font-semibold mt-4">€{product.price}</p>
 
           <div className="mt-6">
             <label className="block mb-2 text-sm font-medium text-gray-700">
               Color:
             </label>
             <div className="flex space-x-2">
-              {product.colors.map((color, index) => (
+              {product.productColors.map((color, index) => (
                 <span
                   key={index}
-                  className={`block w-6 h-6 rounded-full`}
-                  style={{ backgroundColor: color }}
+                  className={`block w-6 h-6 rounded-full border-2 cursor-pointer ${
+                    selectedColor === color.colorName
+                      ? "border-fuchsia-800 p-3 border-2"
+                      : "border-transparent"
+                  }`}
+                  style={{ backgroundColor: color.colorName }}
+                  onClick={() => setSelectedColor(color.colorName)}
                 ></span>
               ))}
             </div>
@@ -111,23 +170,20 @@ const ProductPage = () => {
               Size:
             </label>
             <div className="flex space-x-2">
-              {product.sizes.map((size, index) => (
+              {product.productSizes.map((size, index) => (
                 <button
                   key={index}
-                  className="px-4 py-2 bg-gray-200 rounded-md"
+                  className={`px-4 py-2 bg-gray-200 rounded-md cursor-pointer ${
+                    selectedSize === size.sizeValue
+                      ? "border-2 border-blue-500"
+                      : ""
+                  }`}
+                  onClick={() => setSelectedSize(size.sizeValue)}
                 >
-                  {size}
+                  {size.sizeValue}
                 </button>
               ))}
             </div>
-          </div>
-
-          <div className="mt-6">
-            <p className="text-sm text-gray-500">
-              Vendor: {product.vendor}
-              <br />
-              Type: {product.type}
-            </p>
           </div>
 
           {/* Add to Cart */}
@@ -150,7 +206,10 @@ const ProductPage = () => {
             >
               +
             </button>
-            <button className="px-6 py-2 bg-blue-600 text-white rounded-md">
+            <button
+              onClick={handleAddToCart}
+              className="px-6 py-2 bg-blue-600 text-white rounded-md"
+            >
               Add to Cart
             </button>
           </div>
@@ -185,7 +244,9 @@ const ProductPage = () => {
         {/* Tab Content */}
         <div className="mt-6">{renderTabContent()}</div>
       </div>
-      <RelatedItems />
+
+      {/* Related Products Section */}
+      <RelatedItems products={relatedItems} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { SubCategory } from './../../models/subCategory/SubCategory';
+
 import { ActionReducerMapBuilder, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Product } from "../../models/product/Product";
 import { ProductCreateDto, ProductUpdateDto } from "../../models/product/productDto";
@@ -39,6 +39,39 @@ const productSlice = new BaseSlice<Product, ProductCreateDto, ProductUpdateDto>(
             state.error = action.payload as string;
             state.loading = false;
         });
+        builder.addCase(fetchProductsBySubCategory.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(fetchProductsBySubCategory.fulfilled, (state, action: PayloadAction<Product[]>) => {
+            state.relatedItems = action.payload;
+            state.loading = false;
+        });
+        builder.addCase(fetchProductsBySubCategory.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.loading = false;
+        });
+        builder.addCase(fetchProductsByNewArrival.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(fetchProductsByNewArrival.fulfilled, (state, action: PayloadAction<Product[]>) => {
+            state.newArrivals = action.payload;
+            state.loading = false;
+        });
+        builder.addCase(fetchProductsByNewArrival.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.loading = false;
+        });
+        builder.addCase(fetchProductsByFeatured.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(fetchProductsByFeatured.fulfilled, (state, action: PayloadAction<Product[]>) => {
+            state.featuredProducts = action.payload;
+            state.loading = false;
+        });
+        builder.addCase(fetchProductsByFeatured.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.loading = false;
+        });
     }
   );
 
@@ -55,6 +88,43 @@ export const fetchProductsByCategory = createAsyncThunk<Product[], string>(
     }
   }
 );
+
+export const fetchProductsBySubCategory = createAsyncThunk<Product[], string>(
+    "products/fetchBySubCategory",
+    async (subcategoryId, { rejectWithValue }) => {
+        try {
+        const response = await axios.get<Product[]>(`${productApiEndpoint}/subcategory/${subcategoryId}`);
+        return response.data;
+        } catch (error: unknown) {
+        const err = error as AxiosError;
+        return rejectWithValue(err.message);
+        }
+    }
+    );
+export const fetchProductsByNewArrival = createAsyncThunk<Product[]>(
+    "products/fetchByNewArrival",
+    async (_, { rejectWithValue }) => {
+        try {
+        const response = await axios.get<Product[]>(`${productApiEndpoint}/new-arrival`);
+        return response.data;
+        } catch (error: unknown) {
+        const err = error as AxiosError;
+        return rejectWithValue(err.message);
+        }
+    }
+    );
+export const fetchProductsByFeatured = createAsyncThunk<Product[]>(
+    "products/fetchByFeatured",
+    async (_, { rejectWithValue }) => {
+        try {
+        const response = await axios.get<Product[]>(`${productApiEndpoint}/featured`);
+        return response.data;
+        } catch (error: unknown) {
+        const err = error as AxiosError;
+        return rejectWithValue(err.message);
+        }
+    }
+    );
 
 export const fetchFilteredProducts = createAsyncThunk<
   PaginatedResult<Product>,
@@ -92,4 +162,5 @@ export const {
   createItem: createProduct,
   updateItem: updateProduct,
   deleteItem: deleteProduct,
+  fetchById: fetchProductById,
 } = productSlice;
