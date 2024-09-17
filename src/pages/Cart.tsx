@@ -3,11 +3,13 @@ import { RootState } from "../app/data/store";
 import { removeItemFromCart, updateQuantity } from "../app/data/cartSlice";
 import { toast } from "react-toastify";
 import collection1 from "../assets/images/Collection-1.jpg";
+import { Link } from "react-router-dom";
 
 const Cart: React.FC = () => {
   const { items, totalItems, totalPrice } = useSelector(
     (state: RootState) => state.cart
   );
+
   const dispatch = useDispatch();
 
   const handleRemove = (productId: string) => {
@@ -113,9 +115,12 @@ const Cart: React.FC = () => {
                   <span className="font-semibold">{totalPrice} €</span>
                 </p>
               </div>
-              <button className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition">
+              <Link
+                to="/orders"
+                className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition"
+              >
                 Proceed to Checkout
-              </button>
+              </Link>
             </div>
           </div>
         )}
