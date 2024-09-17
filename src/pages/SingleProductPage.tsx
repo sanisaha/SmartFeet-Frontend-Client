@@ -23,88 +23,7 @@ const ProductPage = () => {
 
   const product = products.find((product) => product.id === id);
 
-  /*   const product = {
-    id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    createdAt: "2024-09-17T01:20:42.462Z",
-    updatedAt: "2024-09-17T01:20:42.462Z",
-    title: "Men's Casual T-Shirt",
-    description:
-      "A stylish and comfortable casual t-shirt for everyday wear. Made from premium cotton fabric.",
-    price: 29.99,
-    stock: 150,
-    subCategoryId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    brandName: "UrbanStyle",
-    discount: 15,
-    oldPrice: 34.99,
-    isFeatured: true,
-    categoryName: "Men",
-    subCategoryName: "Casual",
-    productImages: [
-      {
-        id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        createdAt: "2024-09-17T01:20:42.462Z",
-        updatedAt: "2024-09-17T01:20:42.462Z",
-        productId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        imageURL: "https://example.com/images/tshirt-primary.jpg",
-        isPrimary: true,
-        imageText: "Front view of Men's Casual T-Shirt",
-      },
-    ],
-    productSizes: [
-      {
-        id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        createdAt: "2024-09-17T01:20:42.462Z",
-        updatedAt: "2024-09-17T01:20:42.462Z",
-        productId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        sizeValue: "Medium",
-        quantity: 50,
-      },
-      {
-        id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        createdAt: "2024-09-17T01:20:42.462Z",
-        updatedAt: "2024-09-17T01:20:42.462Z",
-        productId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        sizeValue: "Large",
-        quantity: 70,
-      },
-    ],
-    productColors: [
-      {
-        id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        createdAt: "2024-09-17T01:20:42.462Z",
-        updatedAt: "2024-09-17T01:20:42.462Z",
-        productId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        colorName: "Black",
-      },
-      {
-        id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        createdAt: "2024-09-17T01:20:42.462Z",
-        updatedAt: "2024-09-17T01:20:42.462Z",
-        productId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        colorName: "White",
-      },
-    ],
-    reviews: [
-      {
-        id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        createdAt: "2024-09-17T01:20:42.462Z",
-        updatedAt: "2024-09-17T01:20:42.462Z",
-        reviewDate: "2024-09-15T12:45:00.000Z",
-        rating: 5,
-        reviewText: "Great fit and comfortable. Perfect for casual outings!",
-      },
-      {
-        id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        createdAt: "2024-09-17T01:20:42.462Z",
-        updatedAt: "2024-09-17T01:20:42.462Z",
-        reviewDate: "2024-09-14T08:30:00.000Z",
-        rating: 2,
-        reviewText: "Nice material, but runs slightly larger than expected.",
-      },
-    ],
-  }; */
-
-  //console.log(product);
+  console.log(product);
 
   // State for quantity and selected tab
   const [quantity, setQuantity] = useState(1);
@@ -317,6 +236,8 @@ const ProductPage = () => {
         {/* Tab Content */}
         <div className="mt-6">{renderTabContent()}</div>
       </div>
+
+      {/* Related Products Section */}
       <RelatedItems />
     </div>
   );

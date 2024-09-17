@@ -3,6 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import collection2 from "../../assets/images/Collection-2.jpg";
+import { CategoryName, SubCategoryName } from "../../models/enums/AllEnum";
 
 // Sample related products data
 const relatedProducts = [
@@ -49,7 +50,10 @@ const relatedProducts = [
     brand: "Nike, Jordan",
   },
 ];
-
+interface RelatedItemsProps {
+  category: CategoryName;
+  subcategory: SubCategoryName;
+}
 const RelatedItems = () => {
   const settings = {
     dots: true,
