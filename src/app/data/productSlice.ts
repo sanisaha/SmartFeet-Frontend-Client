@@ -94,6 +94,20 @@ const productSlice = new BaseSlice<Product, ProductCreateDto, ProductUpdateDto>(
             state.error = action.payload as string;
             state.loading = false;
         });
+        builder.addCase(updateProductByAdmin.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(updateProductByAdmin.fulfilled, (state, action: PayloadAction<Product>) => {
+            const product = state.items.find((p) => p.id === action.payload.id);
+            if (product) {
+                Object.assign(product, action.payload);
+            }
+            state.loading = false;
+        });
+        builder.addCase(updateProductByAdmin.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.loading = false;
+        });
     }
   );
 
@@ -168,6 +182,20 @@ export const deleteProductByAdmin = createAsyncThunk<string, string>(
     try {
       await axios.delete(`${productApiEndpoint}/${id}`);
       return id;
+    } catch (error: unknown) {
+      const err = error as AxiosError;
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+// Create a new async thunk for update product
+export const updateProductByAdmin = createAsyncThunk<Product, ProductUpdateDto>(
+  "products/updateProduct",
+  async (productDto, { rejectWithValue }) => {
+    try {
+      const response = await axios.put<Product>(`${productApiEndpoint}/${productDto.id}`, productDto);
+      return response.data;
     } catch (error: unknown) {
       const err = error as AxiosError;
       return rejectWithValue(err.message);

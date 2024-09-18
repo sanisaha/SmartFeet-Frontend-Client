@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteProductByAdmin,
   fetchFilteredProducts,
+  updateProductByAdmin,
 } from "../app/data/productSlice";
 import {
   CategoryName,
@@ -15,6 +16,9 @@ import { Link, useLocation } from "react-router-dom";
 import ProductHeader from "../shared/ui/ProductHeader";
 import { getUser } from "../app/data/authSlice";
 import { toast } from "react-toastify";
+import { Product } from "../models/product/Product";
+import { ProductUpdateDto } from "../models/product/productDto";
+import EditProductModal from "../feature/ShoesPage/EditProductModal";
 
 export const categories: CategoryName[] = ["Men", "Women", "Kids"];
 export const subcategories: SubCategoryName[] = [
@@ -48,6 +52,8 @@ const ShoesPage = () => {
   const [selectedSize, setSelectedSize] = useState<SizeValue | undefined>(
     undefined
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [productToEdit, setProductToEdit] = useState(null);
   const dispatch: AppDispatch = useDispatch();
   const {
     items: products,
@@ -86,6 +92,23 @@ const ShoesPage = () => {
       })
       .catch((err) => {
         toast.error("Error deleting product");
+      });
+  };
+
+  const handleEdit = (product: any) => {
+    setProductToEdit(product);
+    setIsModalOpen(true);
+  };
+
+  const handleSave = (updatedProduct: ProductUpdateDto) => {
+    // Call the update product API
+    setIsModalOpen(false);
+    dispatch(updateProductByAdmin(updatedProduct))
+      .then(() => {
+        toast.success("Product updated successfully");
+      })
+      .catch((err) => {
+        toast.error("Error updating product");
       });
   };
 
@@ -234,12 +257,12 @@ const ShoesPage = () => {
                     </div>
                     {user?.role === "Admin" && (
                       <div className="flex justify-between items-center mt-2">
-                        <Link
-                          to={`/shoes/edit/${shoe.id}`}
+                        <button
+                          onClick={() => handleEdit(shoe)}
                           className="btn btn-warning"
                         >
                           Edit
-                        </Link>
+                        </button>
                         <button
                           onClick={() => handleDelete(shoe.id)}
                           className="btn btn-error"
@@ -257,6 +280,15 @@ const ShoesPage = () => {
           </div>
         </div>
       </div>
+      {/* Edit Product Modal */}
+      {productToEdit && (
+        <EditProductModal
+          product={productToEdit} // Pass selected product to modal
+          isOpen={isModalOpen} // Modal visibility
+          onClose={() => setIsModalOpen(false)} // Close modal
+          onSave={handleSave} // Save handler
+        />
+      )}
     </div>
   );
 };
