@@ -72,6 +72,17 @@ const productSlice = new BaseSlice<Product, ProductCreateDto, ProductUpdateDto>(
             state.error = action.payload as string;
             state.loading = false;
         });
+        builder.addCase(createProductByAdmin.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(createProductByAdmin.fulfilled, (state, action: PayloadAction<Product>) => {
+            state.items.push(action.payload);
+            state.loading = false;
+        });
+        builder.addCase(createProductByAdmin.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.loading = false;
+        });
     }
   );
 
@@ -125,6 +136,19 @@ export const fetchProductsByFeatured = createAsyncThunk<Product[]>(
         }
     }
     );
+// Create a new async thunk for creating a new product
+export const createProductByAdmin = createAsyncThunk<Product, ProductCreateDto>(
+  "products/createProduct",
+  async (productDto, { rejectWithValue }) => {
+    try {
+      const response = await axios.post<Product>(productApiEndpoint, productDto);
+      return response.data;
+    } catch (error: unknown) {
+      const err = error as AxiosError;
+      return rejectWithValue(err.message);
+    }
+  }
+);
 
 export const fetchFilteredProducts = createAsyncThunk<
   PaginatedResult<Product>,

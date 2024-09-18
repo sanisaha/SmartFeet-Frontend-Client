@@ -4,12 +4,11 @@ import { AppDispatch, RootState } from "../app/data/store";
 import axios from "axios";
 import { updateUser } from "../app/data/userSlice";
 import { Order } from "../models/order/Order";
+import { getUser } from "../app/data/authSlice";
 
 const ProfilePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { user, isAuthenticated } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { user } = useSelector((state: RootState) => state.auth);
   const [orders, setOrders] = useState<Order[]>([]);
   const [showUpdateDetails, setShowUpdateDetails] = useState(false);
   const [showOrders, setShowOrders] = useState(false);
@@ -19,6 +18,10 @@ const ProfilePage: React.FC = () => {
     email: "",
     phoneNumber: "",
   });
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
 
   useEffect(() => {
     if (user) {

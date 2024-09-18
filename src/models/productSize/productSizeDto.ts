@@ -8,9 +8,8 @@ export interface ProductSizeReadDto extends BaseReadDto<ProductSize> {
     quantity: number;
 }
 export interface ProductSizeCreateDto extends BaseCreateDto<ProductSize> {
-    sizeValue: SizeValue;  // Assuming SizeValue is an enum or string
+    sizeValue?: SizeValue;  // Assuming SizeValue is an enum or string
     quantity: number;
-    createEntity(): ProductSize;
 }
 export interface ProductSizeUpdateDto extends BaseUpdateDto<ProductSize> {
     id: string;          // Guid in C# is a string in TypeScript

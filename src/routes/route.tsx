@@ -8,6 +8,9 @@ import OrderPage from "../pages/OrderPage";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import ProfilePage from "../pages/ProfilePage";
+import DashboardLayout from "../layout/DashboardLayout";
+import CreateProductPage from "../pages/dashboard/CreateProductPage";
+import ManageUserPage from "../pages/dashboard/ManageUserPage";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +50,20 @@ const router = createBrowserRouter([
   {
     path: "/shoes",
     element: <ShoesPage />,
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <CreateProductPage />,
+      },
+      {
+        path: "/dashboard/manage-users",
+        element: <ManageUserPage />,
+      },
+    ],
   },
 ]);
 
