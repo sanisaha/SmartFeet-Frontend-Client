@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { CategoryName, SubCategoryName } from "../../models/enums/AllEnum";
 import Dropdown from "../services/Dropdown";
 import { categories, subcategories } from "../../pages/ShoesPage";
-import { FaCartArrowDown } from "react-icons/fa";
+import { FaCartArrowDown, FaUser } from "react-icons/fa";
 
 const Header = () => {
   const [dropdownStates, setDropdownStates] = useState({
@@ -118,22 +118,9 @@ const Header = () => {
             <MagnifyingGlassIcon className="h-5 w-5" />
           </button>
         </div>
-        <a href="#" className="text-gray-600 hover:text-blue-600">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="h-6 w-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5.121 17.804A6 6 0 0112 15a6 6 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-          </svg>
-        </a>
+        <button className="text-gray-600 hover:text-blue-600">
+          <FaUser />
+        </button>
 
         <Link to="/cart" className="relative text-gray-600 hover:text-red-600">
           <FaCartArrowDown />
