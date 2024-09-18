@@ -5,11 +5,11 @@ import { Review } from "../review/Review";
 import { BaseEntity } from "../shared/BaseEntity";
 
 export interface User extends BaseEntity {
-    userName?: string;
+    userName: string;
     email: string;
     password?: string;
     salt: Uint8Array;
-    phoneNumber?: string;
+    phoneNumber: string;
     role: UserRole;
     addressId?: string;
     reviews?: Review[];

@@ -20,13 +20,10 @@ export interface UserReadDto extends BaseReadDto<User> {
 }
 
 export interface UserUpdateDto extends BaseUpdateDto<User> {
-    id: string; // Guid is represented as string
+    id: string; // non-nullable GUID
     userName?: string | null; // nullable field
     email: string; // non-nullable field
     phoneNumber?: string | null; // nullable field
-    role: UserRole; // non-nullable field
-
-    updateEntity(entity: User): User; // method to update the entity from the DTO
 }
 
 

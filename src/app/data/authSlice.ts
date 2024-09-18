@@ -8,18 +8,20 @@
 import axios from "axios";
 import { UserCredentials } from "../../models/user/UserCredentials";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { stat } from "fs";
+import { User } from "../../models/user/User";
 
 export interface AuthState {
     token: string | null;
     isAuthenticated: boolean;
     error: string | null;
+    user: User | null;
 }
 
 const initialState: AuthState = {
     token: localStorage.getItem('token'), // Check if token is already stored in localStorage
     isAuthenticated: !!localStorage.getItem('token'),
-    error: null
+    error: null,
+    user: null
 };
 
 export const loginUsers = createAsyncThunk(
@@ -34,6 +36,28 @@ export const loginUsers = createAsyncThunk(
            const token = response.data;
               localStorage.setItem('token', token);
                 return token;
+        }
+        catch (error: unknown) {
+            const err = error as string;
+            return rejectWithValue(err);
+        }
+    }
+);
+
+export const getUser = createAsyncThunk(
+    'auth/getUser',
+    async (_, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                return rejectWithValue('Invalid token');
+            }
+            const response = await axios.get<User>('http://localhost:5216/api/v1/users/profile', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            return response.data;
         }
         catch (error: unknown) {
             const err = error as string;
@@ -75,6 +99,13 @@ export const authSlice = createSlice({
             state.token = null;
         });
         builder.addCase(logoutUsers.rejected, (state, action) => {
+            state.error = action.payload as string;
+        });
+        builder.addCase(getUser.fulfilled, (state, action) => {
+            state.user = action.payload;
+            state.error = null;
+        });
+        builder.addCase(getUser.rejected, (state, action) => {
             state.error = action.payload as string;
         });
     }

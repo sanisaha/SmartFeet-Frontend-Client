@@ -7,6 +7,7 @@ import Cart from "../pages/Cart";
 import OrderPage from "../pages/OrderPage";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
+import ProfilePage from "../pages/ProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
       },
     ],
   },

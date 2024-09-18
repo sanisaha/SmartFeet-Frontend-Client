@@ -10,8 +10,17 @@ import { CategoryName, SubCategoryName } from "../../models/enums/AllEnum";
 import Dropdown from "../services/Dropdown";
 import { categories, subcategories } from "../../pages/ShoesPage";
 import { FaCartArrowDown, FaUser } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../app/data/store";
+import { logoutUsers } from "../../app/data/authSlice";
+import { toast } from "react-toastify";
 
 const Header = () => {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const dispatch: AppDispatch = useDispatch();
   const [dropdownStates, setDropdownStates] = useState({
     Women: false,
     Men: false,
@@ -44,6 +53,16 @@ const Header = () => {
       ...prevState,
       [category]: !prevState[category],
     }));
+  };
+
+  const toggleShowDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUsers());
+    setShowDropdown(false);
+    toast.warning("Logged out successfully!");
   };
 
   return (
@@ -118,10 +137,42 @@ const Header = () => {
             <MagnifyingGlassIcon className="h-5 w-5" />
           </button>
         </div>
-        <button className="text-gray-600 hover:text-blue-600">
+        <button
+          onClick={toggleShowDropdown}
+          className="text-gray-600 hover:text-blue-600"
+        >
           <FaUser />
         </button>
-
+        {/* Conditional Dropdown */}
+        {showDropdown && (
+          <div className="absolute right-0 mt-28 text-center w-36 bg-gray-200 rounded-md shadow-lg z-10">
+            {isAuthenticated ? (
+              <>
+                <Link
+                  to="/profile"
+                  className="block px-4 py-2 text-gray-800 hover:bg-green-400"
+                  onClick={() => setShowDropdown(false)}
+                >
+                  Go to Profile
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full px-4 py-2 text-gray-800 hover:bg-red-600"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="block px-4 py-2 text-gray-800 hover:bg-green-400"
+                onClick={() => setShowDropdown(false)}
+              >
+                Login
+              </Link>
+            )}
+          </div>
+        )}
         <Link to="/cart" className="relative text-gray-600 hover:text-red-600">
           <FaCartArrowDown />
           <span className="absolute top-0 left-5 inline-block w-4 h-4 bg-red-600 text-white text-xs font-bold text-center rounded-full">
