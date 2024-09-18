@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import collection2 from "../assets/images/Collection-2.jpg";
 import { AppDispatch, RootState } from "../app/data/store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFilteredProducts } from "../app/data/productSlice";
+import {
+  deleteProductByAdmin,
+  fetchFilteredProducts,
+} from "../app/data/productSlice";
 import {
   CategoryName,
   SizeValue,
@@ -10,6 +13,8 @@ import {
 } from "../models/enums/AllEnum";
 import { Link, useLocation } from "react-router-dom";
 import ProductHeader from "../shared/ui/ProductHeader";
+import { getUser } from "../app/data/authSlice";
+import { toast } from "react-toastify";
 
 export const categories: CategoryName[] = ["Men", "Women", "Kids"];
 export const subcategories: SubCategoryName[] = [
@@ -49,6 +54,11 @@ const ShoesPage = () => {
     loading,
     error,
   } = useSelector((state: RootState) => state.products);
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
 
   React.useEffect(() => {
     dispatch(
@@ -69,11 +79,19 @@ const ShoesPage = () => {
     selectedSize,
   ]);
 
+  const handleDelete = (id: string) => {
+    dispatch(deleteProductByAdmin(id))
+      .then(() => {
+        toast.success("Product deleted successfully");
+      })
+      .catch((err) => {
+        toast.error("Error deleting product");
+      });
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
-
-  console.log(products);
 
   return (
     <div>
@@ -214,6 +232,22 @@ const ShoesPage = () => {
                       )}
                       <span className="font-bold text-lg">€{shoe.price}</span>
                     </div>
+                    {user?.role === "Admin" && (
+                      <div className="flex justify-between items-center mt-2">
+                        <Link
+                          to={`/shoes/edit/${shoe.id}`}
+                          className="btn btn-warning"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(shoe.id)}
+                          className="btn btn-error"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))

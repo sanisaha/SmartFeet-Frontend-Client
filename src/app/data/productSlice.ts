@@ -83,6 +83,17 @@ const productSlice = new BaseSlice<Product, ProductCreateDto, ProductUpdateDto>(
             state.error = action.payload as string;
             state.loading = false;
         });
+        builder.addCase(deleteProductByAdmin.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(deleteProductByAdmin.fulfilled, (state, action: PayloadAction<string>) => {
+            state.items = state.items.filter((product) => product.id !== action.payload);
+            state.loading = false;
+        });
+        builder.addCase(deleteProductByAdmin.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.loading = false;
+        });
     }
   );
 
@@ -143,6 +154,20 @@ export const createProductByAdmin = createAsyncThunk<Product, ProductCreateDto>(
     try {
       const response = await axios.post<Product>(productApiEndpoint, productDto);
       return response.data;
+    } catch (error: unknown) {
+      const err = error as AxiosError;
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+// Create a new async thunk for delete product
+export const deleteProductByAdmin = createAsyncThunk<string, string>(
+  "products/deleteProduct",
+  async (id, { rejectWithValue }) => {
+    try {
+      await axios.delete(`${productApiEndpoint}/${id}`);
+      return id;
     } catch (error: unknown) {
       const err = error as AxiosError;
       return rejectWithValue(err.message);
