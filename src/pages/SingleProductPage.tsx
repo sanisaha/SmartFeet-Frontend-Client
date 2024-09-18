@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import collection2 from "../assets/images/Collection-2.jpg";
-import RelatedItems from "../shared/ui/RelatedItems";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/data/store";
 import {
@@ -10,6 +9,7 @@ import {
 import { useParams } from "react-router-dom";
 import { addItemToCart } from "../app/data/cartSlice";
 import { toast } from "react-toastify";
+import RelatedItems from "../feature/SingleProductPage/RelatedItems";
 
 const ProductPage = () => {
   const dispatch: AppDispatch = useDispatch();

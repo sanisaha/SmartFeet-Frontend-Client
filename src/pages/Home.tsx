@@ -1,14 +1,14 @@
 import React from "react";
-import Carousel from "../shared/ui/Carousel";
-import CollectionSection from "../shared/ui/CollectionSection";
-import NewArrivals from "../shared/ui/NewArrivals";
-import FeaturedSection from "../shared/ui/FeaturedSection";
+import Carousel from "../feature/Home/Carousel";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/data/store";
 import {
   fetchProductsByFeatured,
   fetchProductsByNewArrival,
 } from "../app/data/productSlice";
+import NewArrivals from "../feature/Home/NewArrivals";
+import CollectionSection from "../feature/Home/CollectionSection";
+import FeaturedSection from "../feature/Home/FeaturedSection";
 
 const Home = () => {
   const dispatch: AppDispatch = useDispatch();
