@@ -1,10 +1,3 @@
-/* export const logoutUser = () => {
-    return (dispatch: Dispatch) => {
-        localStorage.removeItem('token');
-        dispatch({ type: LOGOUT });
-    };
-}; */
-
 import axios from "axios";
 import { UserCredentials } from "../../models/user/UserCredentials";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
@@ -47,6 +40,28 @@ export const loginUsers = createAsyncThunk(
         }
     }
 );
+
+// google login
+export const loginGoogle = createAsyncThunk(
+    'auth/loginGoogle',
+    async (idToken: string, { rejectWithValue }) => {
+        try {
+            const response = await axios.post<string>('http://localhost:5216/api/auth/google-login', { idToken });
+            const token = response.data;
+            localStorage.setItem('token', token);
+            return token;
+        }
+        catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                const errorMessage = error.response?.data?.message || 'Login failed';
+                return rejectWithValue(errorMessage);
+            } else {
+            return rejectWithValue('Login failed');
+            }
+        }
+    }
+);
+
 
 export const getUser = createAsyncThunk(
     'auth/getUser',
@@ -115,6 +130,15 @@ export const authSlice = createSlice({
         });
         builder.addCase(getUser.rejected, (state, action) => {
             state.error = action.payload as string;
+        });
+        builder.addCase(loginGoogle.fulfilled, (state, action) => {
+            state.isAuthenticated = true;
+            state.token = action.payload;
+            state.error = null;
+        });
+        builder.addCase(loginGoogle.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.isAuthenticated = false;
         });
     }
 });

@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AppDispatch, RootState } from "../app/data/store";
-import { loginUsers } from "../app/data/authSlice";
+import { loginGoogle, loginUsers } from "../app/data/authSlice";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../firebase/firebase.config";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -11,9 +13,25 @@ const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { error } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
+  const googleProvider = new GoogleAuthProvider();
 
   const handleLogin = () => {
     dispatch(loginUsers({ email, password }))
+      .unwrap()
+      .then(() => {
+        toast.success("Logged in successfully!");
+        navigate("/"); // Navigate to home or dashboard after successful login
+      })
+      .catch((error) => {
+        toast.error(error);
+      });
+  };
+
+  const handleSocialSignIn = async () => {
+    // Implement Google Sign In
+    const result = await signInWithPopup(auth, googleProvider);
+    const idToken = await result.user.getIdToken();
+    dispatch(loginGoogle(idToken))
       .unwrap()
       .then(() => {
         toast.success("Logged in successfully!");
@@ -63,6 +81,17 @@ const Login: React.FC = () => {
         >
           Login
         </button>
+        <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
+          <p className="text-center font-semibold mx-4 mb-0">OR</p>
+        </div>
+        <div className="w-full">
+          <button
+            onClick={handleSocialSignIn}
+            className="btn w-full bg-green-400"
+          >
+            Google Login
+          </button>
+        </div>
         <p className="mt-4 text-center text-gray-600">
           don't have account{" "}
           <Link
