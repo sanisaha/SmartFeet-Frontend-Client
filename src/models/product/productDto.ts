@@ -33,8 +33,8 @@ export interface ProductCreateDto {
     discount?: number;      // Optional because it can be null
     oldPrice?: number;      // Optional because it can be null
     IsFeatured: boolean;
-    CategoryName: CategoryName;
-    subCategoryName: SubCategoryName;
+    CategoryName?: CategoryName;
+    subCategoryName?: SubCategoryName;
     productImages: ProductImageCreateDto[];
     productSizes: ProductSizeCreateDto[];
     productColors: ProductColorCreateDto[];

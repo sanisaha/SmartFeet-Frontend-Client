@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import collection2 from "../assets/images/Collection-2.jpg";
 import { AppDispatch, RootState } from "../app/data/store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFilteredProducts } from "../app/data/productSlice";
+import {
+  deleteProductByAdmin,
+  fetchFilteredProducts,
+  updateProductByAdmin,
+} from "../app/data/productSlice";
 import {
   CategoryName,
   SizeValue,
@@ -10,6 +14,10 @@ import {
 } from "../models/enums/AllEnum";
 import { Link, useLocation } from "react-router-dom";
 import ProductHeader from "../shared/ui/ProductHeader";
+import { getUser } from "../app/data/authSlice";
+import { toast } from "react-toastify";
+import { ProductUpdateDto } from "../models/product/productDto";
+import EditProductModal from "../feature/ShoesPage/EditProductModal";
 
 export const categories: CategoryName[] = ["Men", "Women", "Kids"];
 export const subcategories: SubCategoryName[] = [
@@ -43,12 +51,19 @@ const ShoesPage = () => {
   const [selectedSize, setSelectedSize] = useState<SizeValue | undefined>(
     undefined
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [productToEdit, setProductToEdit] = useState(null);
   const dispatch: AppDispatch = useDispatch();
   const {
     items: products,
     loading,
     error,
   } = useSelector((state: RootState) => state.products);
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
 
   React.useEffect(() => {
     dispatch(
@@ -69,11 +84,36 @@ const ShoesPage = () => {
     selectedSize,
   ]);
 
+  const handleDelete = (id: string) => {
+    dispatch(deleteProductByAdmin(id))
+      .then(() => {
+        toast.success("Product deleted successfully");
+      })
+      .catch((err) => {
+        toast.error("Error deleting product");
+      });
+  };
+
+  const handleEdit = (product: any) => {
+    setProductToEdit(product);
+    setIsModalOpen(true);
+  };
+
+  const handleSave = (updatedProduct: ProductUpdateDto) => {
+    // Call the update product API
+    setIsModalOpen(false);
+    dispatch(updateProductByAdmin(updatedProduct))
+      .then(() => {
+        toast.success("Product updated successfully");
+      })
+      .catch((err) => {
+        toast.error("Error updating product");
+      });
+  };
+
   if (loading) {
     return <p>Loading...</p>;
   }
-
-  console.log(products);
 
   return (
     <div>
@@ -196,7 +236,7 @@ const ShoesPage = () => {
                     )}
                     <Link to={`/shoes/${shoe.id}`}>
                       <img
-                        src={collection2}
+                        src={shoe.productImages[0].imageURL || collection2}
                         alt={shoe.title}
                         className="w-full h-48 object-cover"
                         loading="lazy"
@@ -214,6 +254,22 @@ const ShoesPage = () => {
                       )}
                       <span className="font-bold text-lg">€{shoe.price}</span>
                     </div>
+                    {user?.role === "Admin" && (
+                      <div className="flex justify-between items-center mt-2">
+                        <button
+                          onClick={() => handleEdit(shoe)}
+                          className="btn btn-warning"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(shoe.id)}
+                          className="btn btn-error"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))
@@ -223,6 +279,15 @@ const ShoesPage = () => {
           </div>
         </div>
       </div>
+      {/* Edit Product Modal */}
+      {productToEdit && (
+        <EditProductModal
+          product={productToEdit} // Pass selected product to modal
+          isOpen={isModalOpen} // Modal visibility
+          onClose={() => setIsModalOpen(false)} // Close modal
+          onSave={handleSave} // Save handler
+        />
+      )}
     </div>
   );
 };

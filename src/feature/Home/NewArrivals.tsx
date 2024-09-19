@@ -4,60 +4,6 @@ import { Product } from "../../models/product/Product";
 import { Link } from "react-router-dom";
 import { FaForward } from "react-icons/fa6";
 import { FaBackward } from "react-icons/fa";
-
-// Sample data for new arrivals
-const newArrivals = [
-  {
-    id: 1,
-    title: "Product 1",
-    category: "Category 1",
-    price: "$100",
-    image: "path-to-image-1.jpg",
-  },
-  {
-    id: 2,
-    title: "Product 2",
-    category: "Category 2",
-    price: "$120",
-    image: "path-to-image-2.jpg",
-  },
-  {
-    id: 3,
-    title: "Product 3",
-    category: "Category 3",
-    price: "$150",
-    image: "path-to-image-3.jpg",
-  },
-  {
-    id: 4,
-    title: "Product 4",
-    category: "Category 4",
-    price: "$90",
-    image: "path-to-image-4.jpg",
-  },
-  {
-    id: 5,
-    title: "Product 5",
-    category: "Category 5",
-    price: "$130",
-    image: "path-to-image-5.jpg",
-  },
-  {
-    id: 6,
-    title: "Product 6",
-    category: "Category 6",
-    price: "$200",
-    image: "path-to-image-6.jpg",
-  },
-  {
-    id: 7,
-    title: "Product 7",
-    category: "Category 7",
-    price: "$70",
-    image: "path-to-image-7.jpg",
-  },
-  // Add more items as needed
-];
 interface NewArrivalsProps {
   newArrivals: Product[];
 }
@@ -99,7 +45,7 @@ const NewArrivals: React.FC<NewArrivalsProps> = ({ newArrivals }) => {
             >
               <Link to={`/shoes/${product.id}`}>
                 <img
-                  src={collection1}
+                  src={product.productImages[0].imageURL || collection1}
                   alt={product.title}
                   className="w-full h-60 object-cover rounded-t-lg mb-4 transition-transform duration-300 ease-in-out transform hover:scale-110"
                 />

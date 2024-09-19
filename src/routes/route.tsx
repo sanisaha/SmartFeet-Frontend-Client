@@ -5,6 +5,13 @@ import SingleProductPage from "../pages/SingleProductPage";
 import ShoesPage from "../pages/ShoesPage";
 import Cart from "../pages/Cart";
 import OrderPage from "../pages/OrderPage";
+import Register from "../pages/Register";
+import Login from "../pages/Login";
+import ProfilePage from "../pages/ProfilePage";
+import DashboardLayout from "../layout/DashboardLayout";
+import CreateProductPage from "../pages/dashboard/CreateProductPage";
+import ManageUserPage from "../pages/dashboard/ManageUserPage";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -27,11 +34,41 @@ const router = createBrowserRouter([
         path: "/orders",
         element: <OrderPage />,
       },
+      {
+        path: "/register",
+        element: <Register />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/profile",
+        element: (
+          <PrivateRoute>
+            <ProfilePage></ProfilePage>
+          </PrivateRoute>
+        ),
+      },
     ],
   },
   {
     path: "/shoes",
     element: <ShoesPage />,
+  },
+  {
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <CreateProductPage />,
+      },
+      {
+        path: "/dashboard/manage-users",
+        element: <ManageUserPage />,
+      },
+    ],
   },
 ]);
 

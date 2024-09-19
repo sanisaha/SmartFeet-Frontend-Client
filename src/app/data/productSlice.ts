@@ -72,6 +72,42 @@ const productSlice = new BaseSlice<Product, ProductCreateDto, ProductUpdateDto>(
             state.error = action.payload as string;
             state.loading = false;
         });
+        builder.addCase(createProductByAdmin.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(createProductByAdmin.fulfilled, (state, action: PayloadAction<Product>) => {
+            state.items.push(action.payload);
+            state.loading = false;
+        });
+        builder.addCase(createProductByAdmin.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.loading = false;
+        });
+        builder.addCase(deleteProductByAdmin.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(deleteProductByAdmin.fulfilled, (state, action: PayloadAction<string>) => {
+            state.items = state.items.filter((product) => product.id !== action.payload);
+            state.loading = false;
+        });
+        builder.addCase(deleteProductByAdmin.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.loading = false;
+        });
+        builder.addCase(updateProductByAdmin.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(updateProductByAdmin.fulfilled, (state, action: PayloadAction<Product>) => {
+            const product = state.items.find((p) => p.id === action.payload.id);
+            if (product) {
+                Object.assign(product, action.payload);
+            }
+            state.loading = false;
+        });
+        builder.addCase(updateProductByAdmin.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.loading = false;
+        });
     }
   );
 
@@ -125,6 +161,74 @@ export const fetchProductsByFeatured = createAsyncThunk<Product[]>(
         }
     }
     );
+// Create a new async thunk for creating a new product
+export const createProductByAdmin = createAsyncThunk<Product, ProductCreateDto>(
+  "products/createProduct",
+  async (productDto, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token');
+            if (!token) {
+                return rejectWithValue('Invalid token');
+            }
+      const response = await axios.post<Product>(productApiEndpoint, productDto, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+      );
+      return response.data;
+    } catch (error: unknown) {
+      const err = error as AxiosError;
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+// Create a new async thunk for delete product
+export const deleteProductByAdmin = createAsyncThunk<string, string>(
+  "products/deleteProduct",
+  async (id, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token');
+            if (!token) {
+                return rejectWithValue('Invalid token');
+            }
+      await axios.delete(`${productApiEndpoint}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+      );
+      return id;
+    } catch (error: unknown) {
+      const err = error as AxiosError;
+      return rejectWithValue(err.message);
+    }
+  }
+);
+
+// Create a new async thunk for update product
+export const updateProductByAdmin = createAsyncThunk<Product, ProductUpdateDto>(
+  "products/updateProduct",
+  async (productDto, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('token');
+            if (!token) {
+                return rejectWithValue('Invalid token');
+            }
+      const response = await axios.put<Product>(`${productApiEndpoint}/${productDto.id}`, productDto, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+      );
+      return response.data;
+    } catch (error: unknown) {
+      const err = error as AxiosError;
+      return rejectWithValue(err.message);
+    }
+  }
+);
 
 export const fetchFilteredProducts = createAsyncThunk<
   PaginatedResult<Product>,

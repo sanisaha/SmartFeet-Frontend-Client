@@ -28,7 +28,7 @@ const RelatedItems: React.FC<RelatedItemsProps> = ({ products }) => {
             <div className="border rounded-lg shadow-sm p-4 text-center">
               <Link to={`/shoes/${product.id}`}>
                 <img
-                  src={collection2}
+                  src={product.productImages[0].imageURL || collection2}
                   alt={product.title}
                   className="w-full h-48 object-cover mb-4"
                   loading="lazy"

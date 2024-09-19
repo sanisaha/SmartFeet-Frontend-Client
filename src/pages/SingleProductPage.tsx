@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import collection2 from "../assets/images/Collection-2.jpg";
-import RelatedItems from "../shared/ui/RelatedItems";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/data/store";
 import {
@@ -10,9 +9,17 @@ import {
 import { useParams } from "react-router-dom";
 import { addItemToCart } from "../app/data/cartSlice";
 import { toast } from "react-toastify";
+import RelatedItems from "../feature/SingleProductPage/RelatedItems";
+import { getUser } from "../app/data/authSlice";
+import axios from "axios";
+import ReviewModal from "../feature/SingleProductPage/ReviewModal";
 
 const ProductPage = () => {
   const dispatch: AppDispatch = useDispatch();
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const { user } = useSelector((state: RootState) => state.auth);
   const {
     items: products,
     relatedItems,
@@ -20,6 +27,7 @@ const ProductPage = () => {
     error,
   } = useSelector((state: RootState) => state.products);
   const { id } = useParams();
+  const [isModalOpen, setModalOpen] = useState(false);
 
   React.useEffect(() => {
     if (id) {
@@ -28,12 +36,41 @@ const ProductPage = () => {
   }, [dispatch, id]);
 
   useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (products?.length > 0) {
       dispatch(fetchProductsBySubCategory(products[0].subCategoryId));
     }
   }, [dispatch, products]);
 
   const product = products.find((product) => product.id === id);
+
+  // Function to handle review submission
+  const handleReviewSubmit = async (reviewData: {
+    rating: number;
+    reviewText: string;
+  }) => {
+    const reviewPayload = {
+      productId: product?.id,
+      userId: user?.id, // Assume the user object has an `id` field
+      reviewDate: new Date().toISOString(),
+      rating: reviewData.rating,
+      reviewText: reviewData.reviewText,
+    };
+
+    try {
+      await axios.post("http://localhost:5216/api/v1/Review", reviewPayload, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      toast.success("Review submitted successfully");
+    } catch (error) {
+      toast.error("Failed to submit review");
+    }
+  };
 
   // State for quantity and selected tab
   const [quantity, setQuantity] = useState(1);
@@ -114,14 +151,26 @@ const ProductPage = () => {
           ) : (
             product.reviews.map((review, index) => (
               <div key={index} className="mt-4">
-                <h3 className="font-semibold">{"author"}</h3>
+                <h3 className="font-semibold">{"anonymus user"}</h3>
                 <div className="text-yellow-400">
                   {`★`.repeat(review.rating)}
                 </div>
                 <p className="mt-2 text-gray-600">{review.reviewText}</p>
-                <p className="text-sm text-gray-500">{"review.reviewDate"}</p>
+                <p className="text-sm text-gray-500">
+                  {new Date(review.reviewDate).toLocaleDateString()}
+                </p>
               </div>
             ))
+          )}
+          {isAuthenticated && (
+            <div>
+              <button
+                onClick={() => setModalOpen(true)}
+                className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md"
+              >
+                Write a Review
+              </button>
+            </div>
           )}
         </div>
       );
@@ -134,14 +183,18 @@ const ProductPage = () => {
       <div className="flex flex-col md:flex-row">
         {/* Product Image */}
         <div className="w-full md:w-1/2">
-          <img src={collection2} alt={product.title} className="rounded-lg" />
+          <img
+            src={product.productImages[0].imageURL || collection2}
+            alt={product.title}
+            className="rounded-lg"
+          />
 
           {/* Image Thumbnails */}
           <div className="flex space-x-4 mt-4">
             {product.productImages.map((image, index) => (
               <img
                 key={index}
-                src={collection2}
+                src={image.imageURL || collection2}
                 alt={`Thumbnail ${index + 1}`}
                 className="w-24 h-24 rounded-lg border border-gray-300"
               />
@@ -266,6 +319,12 @@ const ProductPage = () => {
 
       {/* Related Products Section */}
       <RelatedItems products={relatedItems} />
+      {/* Review Modal */}
+      <ReviewModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        onSubmit={handleReviewSubmit}
+      />
     </div>
   );
 };

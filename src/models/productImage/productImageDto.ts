@@ -13,7 +13,6 @@ export interface ProductImageCreateDto extends BaseCreateDto<ProductImage> {
     imageURL: string;
     isPrimary: boolean;
     imageText?: string;  // Optional because it can be null
-    createEntity(): ProductImage;
 }
 
 export interface ProductImageUpdateDto extends BaseUpdateDto<ProductImage> {

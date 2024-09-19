@@ -88,7 +88,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
               {/* Product Image */}
               <Link to={`/shoes/${shoe.id}`} className="block">
                 <img
-                  src={collection2}
+                  src={shoe.productImages[0].imageURL || collection2}
                   alt={shoe.title}
                   className="w-full h-96 object-cover z-10" // Ensuring the image is on top
                 />
