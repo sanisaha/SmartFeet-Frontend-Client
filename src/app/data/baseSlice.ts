@@ -15,6 +15,7 @@ export interface BaseState<T extends BaseEntity> {
   relatedItems: T[];
   newArrivals: T[];
   featuredProducts: T[];
+  searchProducts: T[];
   currentPage: number;
   totalPages: number;
   totalItems: number;
@@ -97,6 +98,7 @@ export class BaseSlice<T extends BaseEntity, CreateDto, UpdateDto> {
       relatedItems: [],
       newArrivals: [],
       featuredProducts: [],
+      searchProducts: [],
       currentPage: 0,
       totalPages: 0,
       totalItems: 0,

@@ -11,6 +11,11 @@ export interface Order extends BaseEntity {
 
     userId?: string | null; // nullable GUID, represented as a string
     addressId?: string | null; // nullable GUID, represented as a string
+    firstName: string; // non-nullable string
+    lastName: string; // non-nullable string
+    email: string; // non-nullable string
+    phoneNumber: string; // non-nullable string
+    paymentMethod: string; // non-nullable string
 
     // Navigation Properties
     orderItems: OrderItem[]; // non-nullable collection of OrderItems

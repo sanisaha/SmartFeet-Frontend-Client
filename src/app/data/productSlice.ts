@@ -5,6 +5,7 @@ import { ProductCreateDto, ProductUpdateDto } from "../../models/product/product
 import { BaseSlice, BaseState, PaginatedResult } from "./baseSlice";
 import axios, { AxiosError } from "axios";
 import { CategoryName, SizeValue, SubCategoryName } from "../../models/enums/AllEnum";
+import { title } from "process";
 
 // Define the API endpoint for products
 const productApiEndpoint = "http://localhost:5216/api/Product";
@@ -108,6 +109,17 @@ const productSlice = new BaseSlice<Product, ProductCreateDto, ProductUpdateDto>(
             state.error = action.payload as string;
             state.loading = false;
         });
+        builder.addCase(searchProductsByTitle.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(searchProductsByTitle.fulfilled, (state, action: PayloadAction<Product[]>) => {
+            state.searchProducts = action.payload;
+            state.loading = false;
+        });
+        builder.addCase(searchProductsByTitle.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.loading = false;
+        });
     }
   );
 
@@ -123,6 +135,23 @@ export const fetchProductsByCategory = createAsyncThunk<Product[], string>(
       return rejectWithValue(err.message);
     }
   }
+);
+
+// Create a new async thunk for search products by title
+export const searchProductsByTitle = createAsyncThunk(
+  'products/searchProductsByTitle',
+  async (query : string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${productApiEndpoint}/search`, {
+        params: {
+          title: query
+        }
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || 'Error fetching search results');
+  }
+}
 );
 
 export const fetchProductsBySubCategory = createAsyncThunk<Product[], string>(

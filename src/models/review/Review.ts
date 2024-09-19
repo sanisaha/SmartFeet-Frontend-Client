@@ -7,6 +7,7 @@ export interface Review extends BaseEntity {
     reviewDate: Date;  // The date of the review
     rating: number;  // Rating out of some value (1-5 typically)
     reviewText?: string;  // Optional review text
+    reviewerName: string;  // Optional reviewer name
   
     // Optional navigation properties
   }

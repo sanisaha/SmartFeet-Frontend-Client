@@ -58,6 +58,7 @@ const ProductPage = () => {
       reviewDate: new Date().toISOString(),
       rating: reviewData.rating,
       reviewText: reviewData.reviewText,
+      reviewerName: user?.userName || "Anonymous user",
     };
 
     try {
@@ -151,7 +152,7 @@ const ProductPage = () => {
           ) : (
             product.reviews.map((review, index) => (
               <div key={index} className="mt-4">
-                <h3 className="font-semibold">{"anonymus user"}</h3>
+                <h3 className="font-semibold">{review.reviewerName}</h3>
                 <div className="text-yellow-400">
                   {`★`.repeat(review.rating)}
                 </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import {
   MagnifyingGlassIcon,
   XCircleIcon,
@@ -14,6 +14,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/data/store";
 import { getUser, logoutUsers } from "../../app/data/authSlice";
 import { toast } from "react-toastify";
+import { searchProductsByTitle } from "../../app/data/productSlice";
+import { Product } from "../../models/product/Product";
+import collection1 from "../../assets/images/Collection-1.jpg";
 
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -22,6 +25,7 @@ const Header = () => {
   );
   const { user } = useSelector((state: RootState) => state.auth);
   const { totalItems } = useSelector((state: RootState) => state.cart);
+  const { searchProducts } = useSelector((state: RootState) => state.products);
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
@@ -34,16 +38,21 @@ const Header = () => {
     Kids: false,
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle the mobile menu
-  const [searchText, setSearchText] = useState("");
+  const [query, setQuery] = useState("");
 
   const navigate = useNavigate();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    setQuery(input);
+
+    if (input.length > 0) {
+      dispatch(searchProductsByTitle(input));
+    }
   };
 
   const clearSearch = () => {
-    setSearchText("");
+    setQuery("");
   };
 
   const navigateToAllShoes = (
@@ -130,15 +139,43 @@ const Header = () => {
           <input
             type="text"
             placeholder="Search"
-            value={searchText}
+            value={query}
             onChange={handleInputChange}
             className="w-10 md:w-full outline-none text-blue-500"
           />
-          {searchText && (
+          {/* Dropdown */}
+          {query && searchProducts.length > 0 && (
+            <>
+              <ul className="absolute left-0 right-0 z-10 top-12 bg-white border border-gray-200 divide-y divide-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                {searchProducts.slice(0, 10).map((product: Product) => (
+                  <Link
+                    key={product.id}
+                    to={`/shoes/${product.id}`}
+                    className="flex items-center px-4 py-2 cursor-pointer hover:bg-gray-100"
+                  >
+                    <img
+                      src={
+                        product.productImages &&
+                        product.productImages.length > 0
+                          ? product.productImages[0].imageURL
+                          : collection1
+                      }
+                      alt={product.title}
+                      className="w-10 h-10 rounded-full object-cover mr-3"
+                    />
+                    <span className="text-gray-700">{product.title}</span>
+                  </Link>
+                ))}
+              </ul>
+            </>
+          )}
+          {/* Clear Search */}
+          {query && (
             <button onClick={clearSearch} className="mx-2 text-blue-500">
               <XCircleIcon className="h-5 w-5" />
             </button>
           )}
+          {/* Search Icon */}
           <span className="h-full border-l border-blue-300 mx-2"></span>
           <button className="text-blue-500">
             <MagnifyingGlassIcon className="h-5 w-5" />
@@ -160,7 +197,7 @@ const Header = () => {
         </button>
         {/* Conditional Dropdown */}
         {showDropdown && (
-          <div className="absolute right-0 mt-28 text-center w-36 bg-gray-200 rounded-md shadow-lg z-10">
+          <div className="absolute right-0 top-16 text-center w-36 bg-gray-200 rounded-md shadow-lg z-10">
             {isAuthenticated ? (
               <>
                 <Link

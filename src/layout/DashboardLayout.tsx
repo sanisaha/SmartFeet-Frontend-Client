@@ -9,7 +9,6 @@ import { getUser } from "../app/data/authSlice";
 const DashboardLayout = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: AppDispatch = useDispatch();
-  console.log(user);
 
   useEffect(() => {
     if (!user) {

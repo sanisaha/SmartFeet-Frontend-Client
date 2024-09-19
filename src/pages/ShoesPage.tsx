@@ -9,6 +9,7 @@ import {
 } from "../app/data/productSlice";
 import {
   CategoryName,
+  ColorName,
   SizeValue,
   SubCategoryName,
 } from "../models/enums/AllEnum";
@@ -33,8 +34,16 @@ export const subcategories: SubCategoryName[] = [
   "Comfort",
   "School",
 ];
+export const colors: ColorName[] = [
+  "Black",
+  "White",
+  "Red",
+  "Blue",
+  "Green",
+  "Yellow",
+];
 const brands = ["Nike", "Adidas", "Puma", "Reebok"];
-const sizes: SizeValue[] = ["Small", "Medium", "Large", "ExtraLarge"];
+export const sizes: SizeValue[] = ["Small", "Medium", "Large", "ExtraLarge"];
 
 const ShoesPage = () => {
   const location = useLocation();
