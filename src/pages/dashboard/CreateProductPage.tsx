@@ -4,6 +4,8 @@ import { AppDispatch, RootState } from "../../app/data/store";
 import { ProductCreateDto } from "../../models/product/productDto";
 import { createProductByAdmin } from "../../app/data/productSlice";
 import { toast } from "react-toastify";
+import { categories, colors, sizes, subcategories } from "../ShoesPage";
+import axios from "axios";
 
 const CreateProductPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -109,15 +111,39 @@ const CreateProductPage: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(createProductByAdmin(formData))
-      .then(() => {
-        toast.success("Product created successfully!");
-      })
-      .catch(() => {
-        toast.error("Product creation failed. Please check your data.");
-      });
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found. Please log in.");
+      }
+      const categoryResponse = await axios.get(
+        `http://localhost:5216/api/v1/Category/categoryName/${formData.CategoryName}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const categoryId = categoryResponse.data.id;
+      const subcategoryResponse = await axios.get(
+        `http://localhost:5216/api/v1/SubCategory/subCategoryName/${formData.subCategoryName}?categoryId=${categoryId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const subCategoryId = subcategoryResponse.data.id;
+
+      await dispatch(createProductByAdmin({ ...formData, subCategoryId }));
+      toast.success("Product created successfully!");
+    } catch (error) {
+      console.error("Error fetching subcategory:", error);
+      toast.error("Error creating product. Please try again.");
+      // Optionally handle the error here (e.g., set error state)
+    }
   };
 
   return (
@@ -191,21 +217,6 @@ const CreateProductPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Sub Category ID */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">
-              Sub Category ID:
-            </label>
-            <input
-              type="text"
-              name="subCategoryId"
-              value={formData.subCategoryId}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200"
-              placeholder="Enter Sub Category ID"
-            />
-          </div>
-
           {/* Optional Fields */}
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -268,14 +279,19 @@ const CreateProductPage: React.FC = () => {
             <label className="block text-gray-700 font-medium mb-1">
               Category Name:
             </label>
-            <input
-              type="text"
+            <select
               name="CategoryName"
               value={formData.CategoryName}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200"
-              placeholder="Enter category name"
-            />
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            >
+              {categories.map((category, index) => (
+                <option key={index} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Sub Category Name */}
@@ -283,14 +299,19 @@ const CreateProductPage: React.FC = () => {
             <label className="block text-gray-700 font-medium mb-1">
               Sub Category Name:
             </label>
-            <input
-              type="text"
+            <select
               name="subCategoryName"
               value={formData.subCategoryName}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200"
-              placeholder="Enter subcategory name"
-            />
+              className="w-full p-2 border border-gray-300 rounded"
+              required
+            >
+              {subcategories.map((subcategory, index) => (
+                <option key={index} value={subcategory}>
+                  {subcategory}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Product Images */}
@@ -342,18 +363,23 @@ const CreateProductPage: React.FC = () => {
           {/* Product Sizes */}
           <div>
             <label className="block text-gray-700 font-medium mb-1">
-              Product Sizes:
+              Product Sizes and Quantity:
             </label>
             {formData.productSizes.map((size, index) => (
               <div key={index} className="mb-4">
-                <input
-                  type="text"
+                <select
                   name="sizeValue"
                   value={size.sizeValue}
-                  onChange={(e) => handleSizeChange(index, e)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200"
-                  placeholder="Enter size"
-                />
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                >
+                  {sizes.map((size, index) => (
+                    <option key={index} value={size}>
+                      {size}
+                    </option>
+                  ))}
+                </select>
                 <input
                   type="number"
                   name="quantity"
@@ -380,14 +406,19 @@ const CreateProductPage: React.FC = () => {
             </label>
             {formData.productColors.map((color, index) => (
               <div key={index} className="mb-4">
-                <input
-                  type="text"
+                <select
                   name="colorName"
                   value={color.colorName}
-                  onChange={(e) => handleColorChange(index, e)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200"
-                  placeholder="Enter color"
-                />
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                  required
+                >
+                  {colors.map((color, index) => (
+                    <option key={index} value={color}>
+                      {color}
+                    </option>
+                  ))}
+                </select>
               </div>
             ))}
             <button
