@@ -134,14 +134,18 @@ const ProductPage = () => {
       <div className="flex flex-col md:flex-row">
         {/* Product Image */}
         <div className="w-full md:w-1/2">
-          <img src={collection2} alt={product.title} className="rounded-lg" />
+          <img
+            src={product.productImages[0].imageURL || collection2}
+            alt={product.title}
+            className="rounded-lg"
+          />
 
           {/* Image Thumbnails */}
           <div className="flex space-x-4 mt-4">
             {product.productImages.map((image, index) => (
               <img
                 key={index}
-                src={collection2}
+                src={image.imageURL || collection2}
                 alt={`Thumbnail ${index + 1}`}
                 className="w-24 h-24 rounded-lg border border-gray-300"
               />

@@ -166,7 +166,16 @@ export const createProductByAdmin = createAsyncThunk<Product, ProductCreateDto>(
   "products/createProduct",
   async (productDto, { rejectWithValue }) => {
     try {
-      const response = await axios.post<Product>(productApiEndpoint, productDto);
+      const token = localStorage.getItem('token');
+            if (!token) {
+                return rejectWithValue('Invalid token');
+            }
+      const response = await axios.post<Product>(productApiEndpoint, productDto, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+      );
       return response.data;
     } catch (error: unknown) {
       const err = error as AxiosError;
@@ -180,7 +189,16 @@ export const deleteProductByAdmin = createAsyncThunk<string, string>(
   "products/deleteProduct",
   async (id, { rejectWithValue }) => {
     try {
-      await axios.delete(`${productApiEndpoint}/${id}`);
+      const token = localStorage.getItem('token');
+            if (!token) {
+                return rejectWithValue('Invalid token');
+            }
+      await axios.delete(`${productApiEndpoint}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+      );
       return id;
     } catch (error: unknown) {
       const err = error as AxiosError;
@@ -194,7 +212,16 @@ export const updateProductByAdmin = createAsyncThunk<Product, ProductUpdateDto>(
   "products/updateProduct",
   async (productDto, { rejectWithValue }) => {
     try {
-      const response = await axios.put<Product>(`${productApiEndpoint}/${productDto.id}`, productDto);
+      const token = localStorage.getItem('token');
+            if (!token) {
+                return rejectWithValue('Invalid token');
+            }
+      const response = await axios.put<Product>(`${productApiEndpoint}/${productDto.id}`, productDto, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+      );
       return response.data;
     } catch (error: unknown) {
       const err = error as AxiosError;

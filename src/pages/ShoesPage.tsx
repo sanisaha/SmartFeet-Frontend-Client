@@ -16,7 +16,6 @@ import { Link, useLocation } from "react-router-dom";
 import ProductHeader from "../shared/ui/ProductHeader";
 import { getUser } from "../app/data/authSlice";
 import { toast } from "react-toastify";
-import { Product } from "../models/product/Product";
 import { ProductUpdateDto } from "../models/product/productDto";
 import EditProductModal from "../feature/ShoesPage/EditProductModal";
 
@@ -237,7 +236,7 @@ const ShoesPage = () => {
                     )}
                     <Link to={`/shoes/${shoe.id}`}>
                       <img
-                        src={collection2}
+                        src={shoe.productImages[0].imageURL || collection2}
                         alt={shoe.title}
                         className="w-full h-48 object-cover"
                         loading="lazy"

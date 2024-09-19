@@ -37,9 +37,13 @@ export const loginUsers = createAsyncThunk(
               localStorage.setItem('token', token);
                 return token;
         }
-        catch (error: unknown) {
-            const err = error as string;
-            return rejectWithValue(err);
+        catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                const errorMessage = error.response?.data?.message || 'Login failed';
+                return rejectWithValue(errorMessage);
+            } else {
+            return rejectWithValue('Login failed');
+            }
         }
     }
 );

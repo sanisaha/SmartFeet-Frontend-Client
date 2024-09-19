@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MagnifyingGlassIcon,
   XCircleIcon,
@@ -12,7 +12,7 @@ import { categories, subcategories } from "../../pages/ShoesPage";
 import { FaCartArrowDown, FaUser } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../app/data/store";
-import { logoutUsers } from "../../app/data/authSlice";
+import { getUser, logoutUsers } from "../../app/data/authSlice";
 import { toast } from "react-toastify";
 
 const Header = () => {
@@ -20,7 +20,14 @@ const Header = () => {
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
   );
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { totalItems } = useSelector((state: RootState) => state.cart);
   const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
+
   const [dropdownStates, setDropdownStates] = useState({
     Women: false,
     Men: false,
@@ -137,6 +144,14 @@ const Header = () => {
             <MagnifyingGlassIcon className="h-5 w-5" />
           </button>
         </div>
+        {/* admin dashboard */}
+        {isAuthenticated && user?.role === "Admin" && (
+          <Link to="/dashboard" className="text-gray-600 hover:text-blue-600">
+            Admin
+          </Link>
+        )}
+        {/* User Dropdown */}
+
         <button
           onClick={toggleShowDropdown}
           className="text-gray-600 hover:text-blue-600"
@@ -176,7 +191,7 @@ const Header = () => {
         <Link to="/cart" className="relative text-gray-600 hover:text-red-600">
           <FaCartArrowDown />
           <span className="absolute top-0 left-5 inline-block w-4 h-4 bg-red-600 text-white text-xs font-bold text-center rounded-full">
-            0
+            {totalItems}
           </span>
         </Link>
       </div>

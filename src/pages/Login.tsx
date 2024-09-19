@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AppDispatch, RootState } from "../app/data/store";
 import { loginUsers } from "../app/data/authSlice";
@@ -9,19 +9,18 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch<AppDispatch>();
-  const { isAuthenticated, error } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { error } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
 
   const handleLogin = () => {
     dispatch(loginUsers({ email, password }))
+      .unwrap()
       .then(() => {
         toast.success("Logged in successfully!");
         navigate("/"); // Navigate to home or dashboard after successful login
       })
-      .catch(() => {
-        toast.error("Login failed. Please check your credentials.");
+      .catch((error) => {
+        toast.error(error);
       });
   };
 
@@ -64,6 +63,15 @@ const Login: React.FC = () => {
         >
           Login
         </button>
+        <p className="mt-4 text-center text-gray-600">
+          don't have account{" "}
+          <Link
+            to="/register"
+            className="text-blue-600 hover:underline hover:text-blue-700 font-semibold transition duration-300"
+          >
+            Register
+          </Link>
+        </p>
 
         {error && <p className="mt-4 text-red-600 text-center">{error}</p>}
       </div>

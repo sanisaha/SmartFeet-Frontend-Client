@@ -29,12 +29,13 @@ const Register: React.FC = () => {
     };
 
     dispatch(registerUser(newUser))
+      .unwrap()
       .then(() => {
         toast.success("User registered successfully!");
         navigate("/login");
       })
-      .catch(() => {
-        toast.error("User registration failed!");
+      .catch((error) => {
+        toast.error(error);
       });
   };
 
@@ -105,7 +106,7 @@ const Register: React.FC = () => {
             onChange={(e) => setRole(e.target.value as UserRole)}
           >
             <option value="User">User</option>
-            <option value="Admin">Admin</option>
+            {/* <option value="Admin">Admin</option> */}
           </select>
         </div>
 

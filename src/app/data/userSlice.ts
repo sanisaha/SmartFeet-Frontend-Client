@@ -26,10 +26,14 @@ export const registerUser = createAsyncThunk(
             return rejectWithValue(errorData || 'User registration failed');
           } */
         return response.data;
-      } catch (error: unknown) {
-        const err = error as string;
-        return rejectWithValue(err);
-      }
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            const errorMessage = error.response?.data?.message || 'registration failed';
+            return rejectWithValue(errorMessage);
+        } else {
+        return rejectWithValue('registration failed');
+        }
+    }
     }
   );
 
@@ -37,7 +41,16 @@ export const registerUser = createAsyncThunk(
     'user/updateUser',
     async (user: UserUpdateDto, { rejectWithValue }) => {
       try {
-        const response = await axios.put<User>(`http://localhost:5216/api/v1/users/${user.id}`, user);
+        const token = localStorage.getItem('token');
+            if (!token) {
+                return rejectWithValue('Invalid token');
+            }
+        const response = await axios.put<User>(`http://localhost:5216/api/v1/users/${user.id}`, user, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+        );
         return response.data;
       } catch (error: unknown) {
         const err = error as string;
@@ -50,7 +63,16 @@ export const registerUser = createAsyncThunk(
     'user/removeUser',
     async (userId: string, { rejectWithValue }) => {
       try {
-        await axios.delete(`http://localhost:5216/api/v1/users/${userId}`);
+        const token = localStorage.getItem('token');
+            if (!token) {
+                return rejectWithValue('Invalid token');
+            }
+        await axios.delete(`http://localhost:5216/api/v1/users/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+        );
         return userId;
       } catch (error: unknown) {
         const err = error as string;
