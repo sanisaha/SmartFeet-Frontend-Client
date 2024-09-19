@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCcMastercard } from "react-icons/fa";
 import { RiVisaFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,12 +7,16 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { clearCart } from "../app/data/cartSlice";
 import { toast } from "react-toastify";
+import { OrderCreateDto } from "../models/order/orderDto";
+import { OrderItemCreateDto } from "../models/orderItem/orderItemDto";
+import { getUser } from "../app/data/authSlice";
 
 const isLoggedIn = true;
 const userAddress = "1234 Elm St, Springfield, IL";
 
 const OrderPage = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.auth);
   const { items, totalPrice } = useSelector((state: RootState) => state.cart);
 
   const [formData, setFormData] = useState({
@@ -124,26 +128,17 @@ const OrderPage = () => {
 
         const addressId = response.data.id; // Assuming the API returns the address ID
 
-        // Log all form data with the created addressId
-        /* const orderData = {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          phone: formData.phone,
-          paymentMethod: formData.paymentMethod,
-          addressId: addressId, // Only log address ID as a reference
-          items: items.map((item) => ({
-            productId: item.product.id,
-            quantity: item.quantity,
-          })),
-          totalPrice: totalPrice,
-        }; */
-
-        const orderData = {
+        const orderData: OrderCreateDto = {
           orderDate: new Date().toISOString(), // Current date and time in ISO format
           totalPrice: totalPrice, // From your cart data
           addressId: addressId, // The address ID from the response
           orderStatus: "Pending", // Initial order status
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phoneNumber: formData.phone,
+          paymentMethod: formData.paymentMethod,
+          userId: user?.id, // User ID from the logged-in user
         };
 
         // Send the order data
@@ -155,7 +150,7 @@ const OrderPage = () => {
 
         // Now that the order is placed, post each item to the orderItem table
         for (const item of items) {
-          const orderItemData = {
+          const orderItemData: OrderItemCreateDto = {
             orderId: orderId, // Use the orderId from the response
             productId: item.product.id, // Get the productId from the cart item
             quantity: item.quantity, // Quantity of the product
@@ -169,7 +164,6 @@ const OrderPage = () => {
           );
         }
 
-        console.log("Order and order items placed successfully");
         toast.success("Order placed successfully!");
 
         // Optionally, clear the cart using a Redux action if you're using Redux
@@ -263,7 +257,7 @@ const OrderPage = () => {
             />
           </div>
 
-          {isLoggedIn && userAddress && (
+          {/* {isLoggedIn && userAddress && (
             <div className="mb-4">
               <input
                 type="checkbox"
@@ -280,7 +274,7 @@ const OrderPage = () => {
                 Use default address for shipping?
               </label>
             </div>
-          )}
+          )} */}
 
           {!formData.useSavedAddress && (
             <div>

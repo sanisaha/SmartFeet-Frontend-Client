@@ -22,6 +22,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
       reviewDate: new Date(),
       rating,
       reviewText,
+      reviewerName: "",
     };
     onSubmit(reviewData);
     onClose();

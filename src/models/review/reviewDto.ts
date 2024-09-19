@@ -5,6 +5,7 @@ export interface ReviewReadDto extends BaseReadDto<Review> {
     reviewDate: Date;
     rating: number;
     reviewText?: string;  // Optional because it can be null
+    reviewerName: string;
 }
 export interface ReviewCreateDto extends BaseCreateDto<Review> {
     productId: string;  // Guid in C# is a string in TypeScript
@@ -12,11 +13,13 @@ export interface ReviewCreateDto extends BaseCreateDto<Review> {
     reviewDate: Date;
     rating: number;
     reviewText: string;  // Optional because it can be null
+    reviewerName: string;
 }
 export interface ReviewUpdateDto extends BaseUpdateDto<Review> {
     id: string;          // Guid in C# is a string in TypeScript
     reviewDate: Date;
     rating: number;
     reviewText?: string;  // Optional because it can be null
+    reviewerName: string;
     updateEntity(entity: Review): Review;
 }
