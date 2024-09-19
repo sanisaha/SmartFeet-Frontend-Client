@@ -72,8 +72,6 @@ const Login: React.FC = () => {
             Register
           </Link>
         </p>
-
-        {error && <p className="mt-4 text-red-600 text-center">{error}</p>}
       </div>
     </div>
   );

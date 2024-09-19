@@ -11,6 +11,7 @@ import ProfilePage from "../pages/ProfilePage";
 import DashboardLayout from "../layout/DashboardLayout";
 import CreateProductPage from "../pages/dashboard/CreateProductPage";
 import ManageUserPage from "../pages/dashboard/ManageUserPage";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -43,7 +44,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <ProfilePage />,
+        element: (
+          <PrivateRoute>
+            <ProfilePage></ProfilePage>
+          </PrivateRoute>
+        ),
       },
     ],
   },
