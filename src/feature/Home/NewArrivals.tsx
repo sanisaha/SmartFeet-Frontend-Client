@@ -65,6 +65,7 @@ const NewArrivals: React.FC<NewArrivalsProps> = ({ newArrivals }) => {
       <div className="flex justify-center mt-8 space-x-4">
         <button
           onClick={handlePrev}
+          aria-label="Previous"
           className="bg-gray-300 p-3 rounded-full hover:bg-gray-400 focus:outline-none disabled:opacity-50"
           disabled={startIndex === 0}
         >
@@ -74,6 +75,7 @@ const NewArrivals: React.FC<NewArrivalsProps> = ({ newArrivals }) => {
         </button>
         <button
           onClick={handleNext}
+          aria-label="Next"
           className="bg-gray-300 p-3 rounded-full hover:bg-gray-400 focus:outline-none disabled:opacity-50"
           disabled={startIndex + itemsPerPage >= newArrivals.length}
         >

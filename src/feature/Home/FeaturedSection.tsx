@@ -76,7 +76,7 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
               key={shoe.id}
               className="relative group bg-white overflow-hidden rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-500 ease-in-out"
             >
-              {shoe.oldPrice && (
+              {shoe.oldPrice ? (
                 <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded">
                   -
                   {Math.round(
@@ -84,6 +84,8 @@ const FeaturedSection: React.FC<FeaturedSectionProps> = ({
                   )}
                   %
                 </span>
+              ) : (
+                <span></span>
               )}
               {/* Product Image */}
               <Link to={`/shoes/${shoe.id}`} className="block">

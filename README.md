@@ -4,6 +4,7 @@
 ![Tailwind css](https://img.shields.io/badge/Tailwind_css-lightblue)
 ![Firebase](https://img.shields.io/badge/Firebase-orange)
 ![DaisyUI](https://img.shields.io/badge/Daisy-UI-green)
+![JEST](https://img.shields.io/badge/JEST-purple)
 
 # 🥿 SmartFeet - Shoes E-commerce Website
 
@@ -54,10 +55,12 @@ SmartFeet is a modern and feature-rich e-commerce platform for buying and sellin
   - Tailwind CSS
   - Daisy UI
   - Firebase (Google Authentication, Hosting)
+  - JEST (for unit test)
 - **Backend:**
   - C# & .NET Core
   - Entity Framework
   - PostgreSQL (database)
+  - XUnit test
 - **Deployment:**
   - Firebase Hosting (Frontend)
   - Azure (Backend)
