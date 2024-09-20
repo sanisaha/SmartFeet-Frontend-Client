@@ -22,7 +22,7 @@ const CreateProductPage: React.FC = () => {
     brandName: "", // Optional
     discount: 0, // Optional
     oldPrice: 0, // Optional
-    IsFeatured: false,
+    isFeatured: false,
     CategoryName: "Men", // Ensure this is correctly typed
     subCategoryName: "Casual", // Ensure this is correctly typed
     productImages: [{ imageURL: "", isPrimary: true, imageText: "" }],
@@ -35,11 +35,12 @@ const CreateProductPage: React.FC = () => {
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
   ) => {
-    const { name, value, type, ariaChecked } = e.target;
+    const { name, value, type } = e.target;
     if (type === "checkbox") {
+      const target = e.target as HTMLInputElement;
       setFormData((prevData) => ({
         ...prevData,
-        [name]: ariaChecked,
+        [name]: target.checked,
       }));
     } else {
       setFormData((prevData) => ({
@@ -268,8 +269,8 @@ const CreateProductPage: React.FC = () => {
             </label>
             <input
               type="checkbox"
-              name="IsFeatured"
-              checked={formData.IsFeatured}
+              name="isFeatured"
+              checked={formData.isFeatured}
               onChange={handleChange}
               className="w-5 h-5 border border-gray-300 rounded"
             />

@@ -20,10 +20,11 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value, type, ariaChecked } = e.target;
+    const { name, value, type } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? ariaChecked : value,
+      [name]:
+        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
@@ -121,7 +122,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
             <input
               type="checkbox"
               name="isFeatured"
-              checked={formData.IsFeatured}
+              checked={formData.isFeatured}
               onChange={handleChange}
               className="mr-2"
             />

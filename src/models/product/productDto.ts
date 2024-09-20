@@ -14,7 +14,7 @@ export interface ProductReadDto {
     brandName?: string;     // Optional because it can be null
     discount?: number;      // Optional because it can be null
     oldPrice?: number;      // Optional because it can be null
-    IsFeatured: boolean;
+    isFeatured: boolean;
     CategoryName: CategoryName;
     subCategoryName: SubCategoryName;
     productImages: ProductImageReadDto[];
@@ -32,7 +32,7 @@ export interface ProductCreateDto {
     brandName?: string;     // Optional because it can be null
     discount?: number;      // Optional because it can be null
     oldPrice?: number;      // Optional because it can be null
-    IsFeatured: boolean;
+    isFeatured: boolean;
     CategoryName?: CategoryName;
     subCategoryName?: SubCategoryName;
     productImages: ProductImageCreateDto[];
@@ -50,7 +50,7 @@ export interface ProductUpdateDto {
     brandName?: string;     // Optional because it can be null
     discount?: number;      // Optional because it can be null
     oldPrice?: number;      // Optional because it can be null
-    IsFeatured: boolean;
+    isFeatured: boolean;
     CategoryName: CategoryName;
     subCategoryName: SubCategoryName;
 }
