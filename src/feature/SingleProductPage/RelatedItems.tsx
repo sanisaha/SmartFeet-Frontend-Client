@@ -23,8 +23,8 @@ const RelatedItems: React.FC<RelatedItemsProps> = ({ products }) => {
     <div className="container mx-auto mt-10">
       <h2 className="text-3xl font-semibold mb-6">- YOU MIGHT ALSO LIKE</h2>
       <Slider {...settings}>
-        {products.map((product, index) => (
-          <div key={index} className="p-4">
+        {products.map((product) => (
+          <div key={product.id} className="p-4">
             <div className="border rounded-lg shadow-sm p-4 text-center">
               <Link to={`/shoes/${product.id}`}>
                 <img
@@ -40,7 +40,7 @@ const RelatedItems: React.FC<RelatedItemsProps> = ({ products }) => {
                     Trending
                   </span>
                 )}
-                {product.oldPrice && (
+                {product.oldPrice ? (
                   <span className="bg-red-500 text-white px-2 py-1 rounded-lg text-xs font-bold ml-2">
                     -
                     {Math.round(
@@ -49,6 +49,8 @@ const RelatedItems: React.FC<RelatedItemsProps> = ({ products }) => {
                     )}
                     %
                   </span>
+                ) : (
+                  <span></span>
                 )}
                 <h3 className="text-lg font-semibold mt-2">{product.title}</h3>
                 <p className="text-sm text-gray-500">
