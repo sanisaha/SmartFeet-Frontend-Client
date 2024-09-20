@@ -234,7 +234,7 @@ const ShoesPage = () => {
                   className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
                 >
                   <div className="relative">
-                    {shoe.oldPrice && (
+                    {shoe.oldPrice ? (
                       <span className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded">
                         -
                         {Math.round(
@@ -242,6 +242,8 @@ const ShoesPage = () => {
                         )}
                         %
                       </span>
+                    ) : (
+                      <span></span>
                     )}
                     <Link to={`/shoes/${shoe.id}`}>
                       <img

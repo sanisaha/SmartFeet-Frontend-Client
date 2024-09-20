@@ -1,6 +1,9 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-green)
 ![React](https://img.shields.io/badge/React-blue)
 ![Redux toolkit](https://img.shields.io/badge/Redux-brown)
+![Tailwind css](https://img.shields.io/badge/Tailwind_css-lightblue)
+![Firebase](https://img.shields.io/badge/Firebase-orange)
+![DaisyUI](https://img.shields.io/badge/Daisy-UI-green)
 
 # 🥿 SmartFeet - Shoes E-commerce Website
 
@@ -8,9 +11,9 @@ SmartFeet is a modern and feature-rich e-commerce platform for buying and sellin
 
 ### Live Demo: [SmartFeet Shoes](https://smartfeet-ceeb7.web.app/) 🚀
 
-# test_admin : email: admin@email.com password: password
+### test_admin : email: admin@email.com password: password
 
-# test_user : email: john@email.com password: password
+### test_user : email: john@email.com password: password
 
 ---
 
@@ -66,45 +69,37 @@ SmartFeet is a modern and feature-rich e-commerce platform for buying and sellin
 
 ### Home Page - New Arrivals & Featured Section
 
-![Home Page](link-to-screenshot)
+![Home Page](src/assets/images/smartfeet-homepage.png)
 
 ### Product Listing & Filtering
 
-![Product Listing](link-to-screenshot)
+![Product Listing](src/assets/images/smartfeet-admin_product_page.png)
 
 ### Product Details with Reviews
 
-![Product Details](link-to-screenshot)
-
-### Cart Page with Edit Options
-
-![Cart Page](link-to-screenshot)
+![Product Details](src/assets/images/smartfeet-product_detail_page.png)
 
 ### User Profile & Order History
 
-![User Profile](link-to-screenshot)
+![User Profile](src/assets/images/smartfeet-user_profile.png)
 
 ### Admin Dashboard - Manage Products & Users
 
-![Admin Dashboard](link-to-screenshot)
+![Admin Dashboard](src/assets/images/smartfeet-admin_dashboard_mobile.png)
+
+### User Login - Google and email/password
+
+![Admin Dashboard](<src/assets/images/smartfeet-login(iPhone%20SE).png>)
+
+### Header - Search filter
+
+![Admin Dashboard](src/assets/images/smartfeet-search_option.png)
 
 ---
 
 ## 💻 Backend Repository
 
-Find the backend code here: [Backend Repo Link](https://github.com/your-backend-repo)
-
----
-
-## 👨‍💻 Contributing
-
-Feel free to open issues or submit pull requests to contribute to the development of **SmartFeet**.
-
----
-
-## 📜 License
-
-This project is licensed under the [MIT License](LICENSE).
+Find the backend code here: [Backend Repo Link](https://github.com/sanisaha/fs18_CSharp_FullStack_Backend)
 
 ---
 
