@@ -13,6 +13,7 @@ import RelatedItems from "../feature/SingleProductPage/RelatedItems";
 import { getUser } from "../app/data/authSlice";
 import axios from "axios";
 import ReviewModal from "../feature/SingleProductPage/ReviewModal";
+import { baseURL } from "../app/data/baseUrl";
 
 const ProductPage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -62,7 +63,7 @@ const ProductPage = () => {
     };
 
     try {
-      await axios.post("http://localhost:5216/api/v1/Review", reviewPayload, {
+      await axios.post(`${baseURL}/api/v1/Review`, reviewPayload, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

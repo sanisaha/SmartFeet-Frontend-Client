@@ -9,9 +9,7 @@ import { clearCart } from "../app/data/cartSlice";
 import { toast } from "react-toastify";
 import { OrderCreateDto } from "../models/order/orderDto";
 import { OrderItemCreateDto } from "../models/orderItem/orderItemDto";
-import { getUser } from "../app/data/authSlice";
-
-const isLoggedIn = true;
+import { baseURL } from "../app/data/baseUrl";
 const userAddress = "1234 Elm St, Springfield, IL";
 
 const OrderPage = () => {
@@ -122,7 +120,7 @@ const OrderPage = () => {
 
         // Use axios to post the address data
         const response = await axios.post(
-          "http://localhost:5216/api/v1/Address",
+          `${baseURL}/api/v1/Address`,
           addressData
         );
 
@@ -143,7 +141,7 @@ const OrderPage = () => {
 
         // Send the order data
         const orderResponse = await axios.post(
-          "http://localhost:5216/api/v1/Order",
+          `${baseURL}/api/v1/Order`,
           orderData
         );
         const orderId = orderResponse.data.id; // Get the newly created orderId
@@ -158,10 +156,7 @@ const OrderPage = () => {
           };
 
           // Post each item to the orderItem table
-          await axios.post(
-            "http://localhost:5216/api/v1/OrderItem",
-            orderItemData
-          );
+          await axios.post(`${baseURL}/api/v1/OrderItem`, orderItemData);
         }
 
         toast.success("Order placed successfully!");

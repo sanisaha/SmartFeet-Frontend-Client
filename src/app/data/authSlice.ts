@@ -1,14 +1,8 @@
-/* export const logoutUser = () => {
-    return (dispatch: Dispatch) => {
-        localStorage.removeItem('token');
-        dispatch({ type: LOGOUT });
-    };
-}; */
-
 import axios from "axios";
 import { UserCredentials } from "../../models/user/UserCredentials";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "../../models/user/User";
+import { baseURL } from "./baseUrl";
 
 export interface AuthState {
     token: string | null;
@@ -28,7 +22,7 @@ export const loginUsers = createAsyncThunk(
     'auth/loginUsers',
     async ({ email, password }: UserCredentials, { rejectWithValue }) => {
         try {
-            const response = await axios.post<string>('http://localhost:5216/login', { email, password });
+            const response = await axios.post<string>(`${baseURL}/login`, { email, password });
             /* if (!response.status) {
                 const errorData = await response;
                 return rejectWithValue(errorData || 'Login failed');
@@ -48,6 +42,28 @@ export const loginUsers = createAsyncThunk(
     }
 );
 
+// google login
+export const loginGoogle = createAsyncThunk(
+    'auth/loginGoogle',
+    async (idToken: string, { rejectWithValue }) => {
+        try {
+            const response = await axios.post<string>(`${baseURL}/api/auth/google-login`, { idToken });
+            const token = response.data;
+            localStorage.setItem('token', token);
+            return token;
+        }
+        catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                const errorMessage = error.response?.data?.message || 'Login failed';
+                return rejectWithValue(errorMessage);
+            } else {
+            return rejectWithValue('Login failed');
+            }
+        }
+    }
+);
+
+
 export const getUser = createAsyncThunk(
     'auth/getUser',
     async (_, { rejectWithValue }) => {
@@ -56,7 +72,7 @@ export const getUser = createAsyncThunk(
             if (!token) {
                 return rejectWithValue('Invalid token');
             }
-            const response = await axios.get<User>('http://localhost:5216/api/v1/users/profile', {
+            const response = await axios.get<User>(`${baseURL}/api/v1/users/profile`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -115,6 +131,15 @@ export const authSlice = createSlice({
         });
         builder.addCase(getUser.rejected, (state, action) => {
             state.error = action.payload as string;
+        });
+        builder.addCase(loginGoogle.fulfilled, (state, action) => {
+            state.isAuthenticated = true;
+            state.token = action.payload;
+            state.error = null;
+        });
+        builder.addCase(loginGoogle.rejected, (state, action) => {
+            state.error = action.payload as string;
+            state.isAuthenticated = false;
         });
     }
 });
