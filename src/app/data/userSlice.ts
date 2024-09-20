@@ -20,7 +20,7 @@ export const registerUser = createAsyncThunk(
     'user/registerUser',
     async (user: UserCreateDto, { rejectWithValue }) => {
       try {
-        const response = await axios.post<User>('http://localhost:5216/api/v1/users', user);
+        const response = await axios.post<User>('https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/users', user);
         /* if (!response.status) {
             const errorData = await response;
             return rejectWithValue(errorData || 'User registration failed');
@@ -45,7 +45,7 @@ export const registerUser = createAsyncThunk(
             if (!token) {
                 return rejectWithValue('Invalid token');
             }
-        const response = await axios.put<User>(`http://localhost:5216/api/v1/users/${user.id}`, user, {
+        const response = await axios.put<User>(`https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/users/${user.id}`, user, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -67,7 +67,7 @@ export const registerUser = createAsyncThunk(
             if (!token) {
                 return rejectWithValue('Invalid token');
             }
-        await axios.delete(`http://localhost:5216/api/v1/users/${userId}`, {
+        await axios.delete(`https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/users/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

@@ -8,7 +8,7 @@ import { CategoryName, SizeValue, SubCategoryName } from "../../models/enums/All
 import { title } from "process";
 
 // Define the API endpoint for products
-const productApiEndpoint = "http://localhost:5216/api/Product";
+const productApiEndpoint = "https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/Product";
 
 // Extend the BaseSlice for Product specific operations
 const productSlice = new BaseSlice<Product, ProductCreateDto, ProductUpdateDto>(

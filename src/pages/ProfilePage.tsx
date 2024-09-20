@@ -51,7 +51,7 @@ const ProfilePage: React.FC = () => {
         }
 
         const response = await axios.get(
-          `http://localhost:5216/api/v1/Order/user/${user?.id}`,
+          `https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/Order/user/${user?.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -122,7 +122,7 @@ const OrderPage = () => {
 
         // Use axios to post the address data
         const response = await axios.post(
-          "http://localhost:5216/api/v1/Address",
+          "https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/Address",
           addressData
         );
 
@@ -143,7 +143,7 @@ const OrderPage = () => {
 
         // Send the order data
         const orderResponse = await axios.post(
-          "http://localhost:5216/api/v1/Order",
+          "https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/Order",
           orderData
         );
         const orderId = orderResponse.data.id; // Get the newly created orderId
@@ -159,7 +159,7 @@ const OrderPage = () => {
 
           // Post each item to the orderItem table
           await axios.post(
-            "http://localhost:5216/api/v1/OrderItem",
+            "https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/OrderItem",
             orderItemData
           );
         }

@@ -119,7 +119,7 @@ const CreateProductPage: React.FC = () => {
         throw new Error("No token found. Please log in.");
       }
       const categoryResponse = await axios.get(
-        `http://localhost:5216/api/v1/Category/categoryName/${formData.CategoryName}`,
+        `https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/Category/categoryName/${formData.CategoryName}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -128,7 +128,7 @@ const CreateProductPage: React.FC = () => {
       );
       const categoryId = categoryResponse.data.id;
       const subcategoryResponse = await axios.get(
-        `http://localhost:5216/api/v1/SubCategory/subCategoryName/${formData.subCategoryName}?categoryId=${categoryId}`,
+        `https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/SubCategory/subCategoryName/${formData.subCategoryName}?categoryId=${categoryId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

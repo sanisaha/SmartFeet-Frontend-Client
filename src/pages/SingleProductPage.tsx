@@ -62,11 +62,15 @@ const ProductPage = () => {
     };
 
     try {
-      await axios.post("http://localhost:5216/api/v1/Review", reviewPayload, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      await axios.post(
+        "https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/Review",
+        reviewPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       toast.success("Review submitted successfully");
     } catch (error) {
       toast.error("Failed to submit review");
