@@ -5,6 +5,7 @@ import axios from "axios";
 import { updateUser } from "../app/data/userSlice";
 import { Order } from "../models/order/Order";
 import { getUser } from "../app/data/authSlice";
+import { baseURL } from "../app/data/baseUrl";
 
 const ProfilePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -51,7 +52,7 @@ const ProfilePage: React.FC = () => {
         }
 
         const response = await axios.get(
-          `https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/Order/user/${user?.id}`,
+          `${baseURL}/api/v1/Order/user/${user?.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

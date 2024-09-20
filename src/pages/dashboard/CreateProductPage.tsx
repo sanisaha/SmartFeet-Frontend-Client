@@ -6,6 +6,7 @@ import { createProductByAdmin } from "../../app/data/productSlice";
 import { toast } from "react-toastify";
 import { categories, colors, sizes, subcategories } from "../ShoesPage";
 import axios from "axios";
+import { baseURL } from "../../app/data/baseUrl";
 
 const CreateProductPage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -119,7 +120,7 @@ const CreateProductPage: React.FC = () => {
         throw new Error("No token found. Please log in.");
       }
       const categoryResponse = await axios.get(
-        `https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/Category/categoryName/${formData.CategoryName}`,
+        `${baseURL}/api/v1/Category/categoryName/${formData.CategoryName}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -128,7 +129,7 @@ const CreateProductPage: React.FC = () => {
       );
       const categoryId = categoryResponse.data.id;
       const subcategoryResponse = await axios.get(
-        `https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/SubCategory/subCategoryName/${formData.subCategoryName}?categoryId=${categoryId}`,
+        `${baseURL}/api/v1/SubCategory/subCategoryName/${formData.subCategoryName}?categoryId=${categoryId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

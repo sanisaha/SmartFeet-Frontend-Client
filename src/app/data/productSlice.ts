@@ -5,10 +5,10 @@ import { ProductCreateDto, ProductUpdateDto } from "../../models/product/product
 import { BaseSlice, BaseState, PaginatedResult } from "./baseSlice";
 import axios, { AxiosError } from "axios";
 import { CategoryName, SizeValue, SubCategoryName } from "../../models/enums/AllEnum";
-import { title } from "process";
+import { baseURL } from "./baseUrl";
 
 // Define the API endpoint for products
-const productApiEndpoint = "https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/Product";
+const productApiEndpoint = `${baseURL}/api/Product`;
 
 // Extend the BaseSlice for Product specific operations
 const productSlice = new BaseSlice<Product, ProductCreateDto, ProductUpdateDto>(

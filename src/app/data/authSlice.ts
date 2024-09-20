@@ -2,6 +2,7 @@ import axios from "axios";
 import { UserCredentials } from "../../models/user/UserCredentials";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { User } from "../../models/user/User";
+import { baseURL } from "./baseUrl";
 
 export interface AuthState {
     token: string | null;
@@ -21,7 +22,7 @@ export const loginUsers = createAsyncThunk(
     'auth/loginUsers',
     async ({ email, password }: UserCredentials, { rejectWithValue }) => {
         try {
-            const response = await axios.post<string>('https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/login', { email, password });
+            const response = await axios.post<string>(`${baseURL}/login`, { email, password });
             /* if (!response.status) {
                 const errorData = await response;
                 return rejectWithValue(errorData || 'Login failed');
@@ -46,7 +47,7 @@ export const loginGoogle = createAsyncThunk(
     'auth/loginGoogle',
     async (idToken: string, { rejectWithValue }) => {
         try {
-            const response = await axios.post<string>('https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/auth/google-login', { idToken });
+            const response = await axios.post<string>(`${baseURL}/api/auth/google-login`, { idToken });
             const token = response.data;
             localStorage.setItem('token', token);
             return token;
@@ -71,7 +72,7 @@ export const getUser = createAsyncThunk(
             if (!token) {
                 return rejectWithValue('Invalid token');
             }
-            const response = await axios.get<User>('https://smartfeet-cycudccehyfnf4cy.canadacentral-01.azurewebsites.net/api/v1/users/profile', {
+            const response = await axios.get<User>(`${baseURL}/api/v1/users/profile`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
