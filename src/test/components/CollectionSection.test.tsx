@@ -3,8 +3,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import CollectionSection from "../../feature/Home/CollectionSection";
 
 // Mock image imports
-jest.mock("../../assets/images/Collection-1.jpg", () => "collection1.jpg");
-jest.mock("../../assets/images/Collection-2.jpg", () => "collection2.jpg");
+jest.mock("../../assets/images/Collection-1.webp", () => "collection1.webp");
+jest.mock("../../assets/images/Collection-2.webp", () => "collection2.webp");
 
 describe("CollectionSection Component", () => {
   test("renders the CollectionSection component with all elements", () => {
@@ -16,8 +16,8 @@ describe("CollectionSection Component", () => {
 
     // Check that both images are rendered
     const images = screen.getAllByRole("img");
-    expect(images[0]).toHaveAttribute("src", "collection1.jpg");
-    expect(images[1]).toHaveAttribute("src", "collection2.jpg");
+    expect(images[0]).toHaveAttribute("src", "collection1.webp");
+    expect(images[1]).toHaveAttribute("src", "collection2.webp");
 
     // Check that both headings are rendered
     expect(

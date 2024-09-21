@@ -5,7 +5,7 @@ import { Product } from "../../models/product/Product";
 import { waitFor } from "@testing-library/react";
 
 // Mocking image imports
-jest.mock("../../assets/images/Collection-2.jpg", () => "collection2.jpg");
+jest.mock("../../assets/images/Collection-2.webp", () => "collection2.webp");
 
 // Define mock products
 const mockProducts: Product[] = [
@@ -41,7 +41,7 @@ const mockProducts: Product[] = [
       {
         id: "img1",
         productId: "1",
-        imageURL: "nike.jpg",
+        imageURL: "nike.webp",
         isPrimary: true,
         createdAt: new Date("2023-08-01").toISOString(),
         updatedAt: new Date("2023-08-05").toISOString(),
@@ -104,7 +104,7 @@ const mockProducts: Product[] = [
       {
         id: "img2",
         productId: "2",
-        imageURL: "adidas.jpg",
+        imageURL: "adidas.webp",
         isPrimary: true,
         createdAt: new Date("2023-07-01").toISOString(),
         updatedAt: new Date("2023-07-15").toISOString(),

@@ -16,7 +16,7 @@ import { getUser, logoutUsers } from "../../app/data/authSlice";
 import { toast } from "react-toastify";
 import { searchProductsByTitle } from "../../app/data/productSlice";
 import { Product } from "../../models/product/Product";
-import collection1 from "../../assets/images/Collection-1.jpg";
+import collection1 from "../../assets/images/Collection-1.webp";
 
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
