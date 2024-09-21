@@ -12,10 +12,6 @@ SmartFeet is a modern and feature-rich e-commerce platform for buying and sellin
 
 ### Live Demo: [SmartFeet Shoes](https://smartfeet-ceeb7.web.app/) 🚀
 
-### test_admin : email: admin@email.com password: password
-
-### test_user : email: john@email.com password: password
-
 ---
 
 ## 🌟 Features
