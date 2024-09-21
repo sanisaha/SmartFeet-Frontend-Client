@@ -2,7 +2,7 @@ import React from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import collection2 from "../../assets/images/Collection-2.jpg";
+import collection2 from "../../assets/images/Collection-2.webp";
 import { CategoryName, SubCategoryName } from "../../models/enums/AllEnum";
 import { Product } from "../../models/product/Product";
 import { Link } from "react-router-dom";

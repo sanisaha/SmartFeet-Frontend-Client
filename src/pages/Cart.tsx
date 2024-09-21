@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/data/store";
 import { removeItemFromCart, updateQuantity } from "../app/data/cartSlice";
 import { toast } from "react-toastify";
-import collection1 from "../assets/images/Collection-1.jpg";
+import collection1 from "../assets/images/Collection-1.webp";
 import { Link } from "react-router-dom";
 
 const Cart: React.FC = () => {

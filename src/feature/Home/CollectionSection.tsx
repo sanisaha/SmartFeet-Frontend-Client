@@ -1,6 +1,6 @@
 import React from "react";
-import collection1 from "../../assets/images/Collection-1.jpg";
-import collection2 from "../../assets/images/Collection-2.jpg";
+import collection1 from "../../assets/images/Collection-1.webp";
+import collection2 from "../../assets/images/Collection-2.webp";
 import { Link } from "react-router-dom";
 
 const CollectionSection = () => {

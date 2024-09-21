@@ -37,7 +37,7 @@ const mockProducts: Product[] = [
       {
         id: "img1",
         productId: "1",
-        imageURL: "nike.jpg",
+        imageURL: "nike.webp",
         isPrimary: true,
         createdAt: new Date("2023-08-01").toISOString(),
         updatedAt: new Date("2023-08-05").toISOString(),
@@ -99,7 +99,7 @@ describe("RelatedItems Component", () => {
     const productImages = screen.getAllByRole("img");
 
     // Assert the first product image
-    expect(productImages[0]).toHaveAttribute("src", "nike.jpg");
+    expect(productImages[0]).toHaveAttribute("src", "nike.webp");
   });
 
   test("discount shows only when old price is available", async () => {

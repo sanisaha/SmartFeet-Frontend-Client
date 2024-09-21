@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import collection2 from "../assets/images/Collection-2.jpg";
+import collection2 from "../assets/images/Collection-2.webp";
 import { AppDispatch, RootState } from "../app/data/store";
 import { useDispatch, useSelector } from "react-redux";
 import {

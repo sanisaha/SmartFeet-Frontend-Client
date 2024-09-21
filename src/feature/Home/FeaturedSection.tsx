@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import collection2 from "../../assets/images/Collection-2.jpg";
+import collection2 from "../../assets/images/Collection-2.webp";
 import { Product } from "../../models/product/Product";
 import { Link } from "react-router-dom";
 

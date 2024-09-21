@@ -23,7 +23,7 @@ const mockProducts: Product[] = [
       {
         id: "img1",
         productId: "1",
-        imageURL: "nike.jpg",
+        imageURL: "nike.webp",
         isPrimary: true,
         createdAt: "2023-08-25",
         updatedAt: "2023-08-25",
@@ -53,7 +53,7 @@ const mockProducts: Product[] = [
       {
         id: "img2",
         productId: "2",
-        imageURL: "adidas.jpg",
+        imageURL: "adidas.webp",
         isPrimary: true,
         createdAt: "2023-08-25",
         updatedAt: "2023-08-25",
@@ -83,7 +83,7 @@ const mockProducts: Product[] = [
       {
         id: "img3",
         productId: "3",
-        imageURL: "puma.jpg",
+        imageURL: "puma.webp",
         isPrimary: true,
         createdAt: "2023-08-25",
         updatedAt: "2023-08-25",
@@ -113,7 +113,7 @@ const mockProducts: Product[] = [
       {
         id: "img4",
         productId: "4",
-        imageURL: "reebok.jpg",
+        imageURL: "reebok.webp",
         isPrimary: true,
         createdAt: "2023-08-25",
         updatedAt: "2023-08-25",
@@ -143,7 +143,7 @@ const mockProducts: Product[] = [
       {
         id: "img4",
         productId: "4",
-        imageURL: "reebok.jpg",
+        imageURL: "reebok.webp",
         isPrimary: true,
         createdAt: "2023-08-25",
         updatedAt: "2023-08-25",
@@ -173,7 +173,7 @@ const mockProducts: Product[] = [
       {
         id: "img4",
         productId: "4",
-        imageURL: "reebok.jpg",
+        imageURL: "reebok.webp",
         isPrimary: true,
         createdAt: "2023-08-25",
         updatedAt: "2023-08-25",
@@ -203,7 +203,7 @@ const mockProducts: Product[] = [
       {
         id: "img4",
         productId: "4",
-        imageURL: "reebok.jpg",
+        imageURL: "reebok.webp",
         isPrimary: true,
         createdAt: "2023-08-25",
         updatedAt: "2023-08-25",

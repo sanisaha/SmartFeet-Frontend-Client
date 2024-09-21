@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import collection1 from "../../assets/images/Collection-1.jpg";
+import collection1 from "../../assets/images/Collection-1.webp";
 import { Product } from "../../models/product/Product";
 import { Link } from "react-router-dom";
 import { FaForward } from "react-icons/fa6";
