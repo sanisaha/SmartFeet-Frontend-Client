@@ -26,6 +26,7 @@ const Dropdown: React.FC<DropdownProps> = ({
     >
       <button
         type="button"
+        aria-label="Category"
         onClick={() => navigateToAllShoes(category)}
         className="text-blue-600 hover:text-red-600"
       >
@@ -38,6 +39,7 @@ const Dropdown: React.FC<DropdownProps> = ({
             <li>
               <button
                 type="button"
+                aria-label="All Shoes"
                 onClick={() => navigateToAllShoes(category)}
                 className="block px-4 py-2 text-blue-600 hover:bg-gray-100"
               >
@@ -48,6 +50,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               <li key={subcat}>
                 <button
                   type="button"
+                  aria-label={subcat}
                   onClick={() => navigateToAllShoes(category, subcat)}
                   className="block px-4 py-2 text-blue-600 hover:bg-gray-100"
                 >

@@ -58,9 +58,9 @@ const Cart: React.FC = () => {
               {items.map((item) => (
                 <div
                   key={item.product.id}
-                  className="flex items-center justify-between border-b border-gray-200 pb-4 mb-4"
+                  className="flex flex-col md:flex-row items-center justify-between border-b border-gray-200 pb-4 mb-4"
                 >
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-4 mb-4 md:mb-0">
                     <img
                       src={collection1} // Assuming there's an image URL
                       alt={item.product.title}
@@ -94,6 +94,7 @@ const Cart: React.FC = () => {
                     {/* Remove Button */}
                     <button
                       onClick={() => handleRemove(item.product.id)}
+                      aria-label="Remove from cart"
                       className="text-red-500 hover:text-red-700"
                     >
                       Remove

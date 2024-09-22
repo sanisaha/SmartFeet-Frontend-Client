@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../app/data/store";
-import Header from "../shared/ui/Header";
 import { Link, Outlet } from "react-router-dom";
 import { FaList, FaUserFriends } from "react-icons/fa";
 import { getUser } from "../app/data/authSlice";
 
+const Header = React.lazy(() => import("../shared/ui/Header"));
 const DashboardLayout = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch: AppDispatch = useDispatch();
@@ -22,8 +22,9 @@ const DashboardLayout = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header Component */}
-      <Header />
-
+      <Suspense fallback={<div>Loading...</div>}>
+        <Header />
+      </Suspense>
       {/* Main Layout with Drawer */}
       <div className="drawer drawer-mobile lg:drawer-open">
         {/* Toggle Drawer Button for mobile */}

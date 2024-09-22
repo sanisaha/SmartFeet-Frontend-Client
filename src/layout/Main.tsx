@@ -1,15 +1,16 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import Header from "../shared/ui/Header";
-import Footer from "../shared/ui/Footer";
+
+const Header = React.lazy(() => import("../shared/ui/Header"));
+const Footer = React.lazy(() => import("../shared/ui/Footer"));
 
 const Main = () => {
   return (
-    <div>
+    <Suspense fallback={<div>Loading...</div>}>
       <Header />
       <Outlet />
       <Footer />
-    </div>
+    </Suspense>
   );
 };
 

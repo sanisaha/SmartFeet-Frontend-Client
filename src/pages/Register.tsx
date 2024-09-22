@@ -112,6 +112,7 @@ const Register: React.FC = () => {
 
         <button
           onClick={handleSubmit}
+          aria-label="Register"
           disabled={loading}
           className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 focus:outline-none disabled:opacity-50"
         >

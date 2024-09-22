@@ -77,6 +77,7 @@ const Login: React.FC = () => {
 
         <button
           onClick={handleLogin}
+          aria-label="Login"
           className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 focus:outline-none"
         >
           Login
@@ -87,6 +88,7 @@ const Login: React.FC = () => {
         <div className="w-full">
           <button
             onClick={handleSocialSignIn}
+            aria-label="Google Login"
             className="btn w-full bg-green-400"
           >
             Google Login

@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import collection2 from "../assets/images/Collection-2.webp";
 import { AppDispatch, RootState } from "../app/data/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,10 +18,7 @@ import ProductHeader from "../shared/ui/ProductHeader";
 import { getUser } from "../app/data/authSlice";
 import { toast } from "react-toastify";
 import { ProductUpdateDto } from "../models/product/productDto";
-
-const EditProductModal = React.lazy(
-  () => import("../feature/ShoesPage/EditProductModal")
-);
+import EditProductModal from "../feature/ShoesPage/EditProductModal";
 
 export const categories: CategoryName[] = ["Men", "Women", "Kids"];
 export const subcategories: SubCategoryName[] = [
@@ -99,7 +96,7 @@ const ShoesPage = () => {
       .then(() => {
         toast.success("Product deleted successfully");
       })
-      .catch((err) => {
+      .catch(() => {
         toast.error("Error deleting product");
       });
   };
@@ -110,13 +107,12 @@ const ShoesPage = () => {
   };
 
   const handleSave = (updatedProduct: ProductUpdateDto) => {
-    // Call the update product API
     setIsModalOpen(false);
     dispatch(updateProductByAdmin(updatedProduct))
       .then(() => {
         toast.success("Product updated successfully");
       })
-      .catch((err) => {
+      .catch(() => {
         toast.error("Error updating product");
       });
   };
@@ -148,6 +144,7 @@ const ShoesPage = () => {
           SmartFeet
         </div>
       </div>
+
       {/* Filters Row */}
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 bg-gray-100 p-4 rounded-lg shadow-md">
         {/* Category Filter */}
@@ -244,7 +241,7 @@ const ShoesPage = () => {
 
       {/* Right Content - Shoe Grid */}
       <div className="w-full p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
           {products.length > 0 ? (
             products.map((shoe) => (
               <div
@@ -286,15 +283,15 @@ const ShoesPage = () => {
                   {user?.role === "Admin" && (
                     <div className="flex justify-between items-center mt-2">
                       <button
+                        aria-label="Edit Product"
                         onClick={() => handleEdit(shoe)}
-                        aria-label="Edit product"
                         className="btn btn-warning"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(shoe.id)}
-                        aria-label="Delete product"
+                        aria-label="Delete Product"
                         className="btn btn-error"
                       >
                         Delete
