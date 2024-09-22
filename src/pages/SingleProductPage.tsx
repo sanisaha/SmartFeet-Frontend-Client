@@ -168,6 +168,7 @@ const ProductPage = () => {
             <div>
               <button
                 onClick={() => setModalOpen(true)}
+                aria-label="Write a Review"
                 className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md"
               >
                 Write a Review
@@ -188,7 +189,7 @@ const ProductPage = () => {
           <img
             src={product.productImages[0].imageURL || collection2}
             alt={product.title}
-            className="rounded-lg"
+            className="rounded-lg w-full"
           />
 
           {/* Image Thumbnails */}
@@ -232,7 +233,7 @@ const ProductPage = () => {
                       ? "border-fuchsia-800 p-3 border-2"
                       : "border-transparent"
                   }`}
-                  style={{ backgroundColor: color.colorName }}
+                  style={{ backgroundColor: color.colorName.toLowerCase() }}
                   onClick={() => setSelectedColor(color.colorName)}
                 ></span>
               ))}
@@ -247,6 +248,7 @@ const ProductPage = () => {
               {product.productSizes.map((size, index) => (
                 <button
                   key={index}
+                  aria-label={`Select size ${size.sizeValue}`}
                   className={`px-4 py-2 bg-gray-200 rounded-md cursor-pointer ${
                     selectedSize === size.sizeValue
                       ? "border-2 border-blue-500"
@@ -264,6 +266,7 @@ const ProductPage = () => {
           <div className="mt-6 flex space-x-4 items-center">
             <button
               onClick={() => handleQuantityChange("decrease")}
+              aria-label="Decrease Quantity"
               className="px-3 py-1 bg-gray-300 text-black rounded-md"
             >
               -
@@ -276,12 +279,14 @@ const ProductPage = () => {
             />
             <button
               onClick={() => handleQuantityChange("increase")}
+              aria-label="Increase Quantity"
               className="px-3 py-1 bg-gray-300 text-black rounded-md"
             >
               +
             </button>
             <button
               onClick={handleAddToCart}
+              aria-label="Add to Cart"
               className="px-6 py-2 bg-blue-600 text-white rounded-md"
             >
               Add to Cart
@@ -295,6 +300,7 @@ const ProductPage = () => {
         <div className="flex space-x-8">
           <button
             onClick={() => setActiveTab("description")}
+            aria-label="Product Description"
             className={`${
               activeTab === "description"
                 ? "text-gray-700 border-b-2 border-black"
@@ -305,6 +311,7 @@ const ProductPage = () => {
           </button>
           <button
             onClick={() => setActiveTab("reviews")}
+            aria-label="Product Reviews"
             className={`${
               activeTab === "reviews"
                 ? "text-gray-700 border-b-2 border-black"

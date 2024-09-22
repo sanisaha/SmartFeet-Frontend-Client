@@ -1,18 +1,21 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../layout/Main";
-import Home from "../pages/Home";
-import SingleProductPage from "../pages/SingleProductPage";
-import ShoesPage from "../pages/ShoesPage";
-import Cart from "../pages/Cart";
-import OrderPage from "../pages/OrderPage";
-import Register from "../pages/Register";
-import Login from "../pages/Login";
-import ProfilePage from "../pages/ProfilePage";
+import PrivateRoute from "./PrivateRoute";
+import React, { Suspense } from "react";
 import DashboardLayout from "../layout/DashboardLayout";
 import CreateProductPage from "../pages/dashboard/CreateProductPage";
 import ManageUserPage from "../pages/dashboard/ManageUserPage";
-import PrivateRoute from "./PrivateRoute";
 
+const Home = React.lazy(() => import("../pages/Home"));
+const SingleProductPage = React.lazy(
+  () => import("../pages/SingleProductPage")
+);
+const Cart = React.lazy(() => import("../pages/Cart"));
+const OrderPage = React.lazy(() => import("../pages/OrderPage"));
+const Register = React.lazy(() => import("../pages/Register"));
+const Login = React.lazy(() => import("../pages/Login"));
+const ProfilePage = React.lazy(() => import("../pages/ProfilePage"));
+const ShoesPage = React.lazy(() => import("../pages/ShoesPage"));
 const router = createBrowserRouter([
   {
     path: "/",
@@ -54,7 +57,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/shoes",
-    element: <ShoesPage />,
+    element: (
+      <Suspense fallback={<div>Loading Shoes Page...</div>}>
+        <ShoesPage />
+      </Suspense>
+    ),
   },
   {
     path: "/dashboard",

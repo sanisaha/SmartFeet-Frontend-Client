@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import collection1 from "../../assets/images/Collection-1.webp";
+import collection1Small from "../../assets/images/Carousel-1_480.webp";
 import { Product } from "../../models/product/Product";
 import { Link } from "react-router-dom";
-import { FaForward } from "react-icons/fa6";
+import { FaForward } from "react-icons/fa";
 import { FaBackward } from "react-icons/fa";
 interface NewArrivalsProps {
   newArrivals: Product[];
@@ -34,20 +34,20 @@ const NewArrivals: React.FC<NewArrivalsProps> = ({ newArrivals }) => {
       </div>
 
       {/* Card Section */}
-      <div className="flex space-x-4 justify-center">
+      <div className=" grid grid-cols-1 md:grid-cols-3 space-x-4 justify-center">
         {/* Display only four cards at a time */}
         {newArrivals
           .slice(startIndex, startIndex + itemsPerPage)
           .map((product) => (
             <div
               key={product.id}
-              className="w-1/4 p-4 bg-white border border-gray-300 rounded-lg shadow hover:shadow-lg transition-shadow transform hover:scale-105 transition-transform duration-300 ease-in-out"
+              className="p-4 bg-white border border-gray-300 rounded-lg shadow hover:shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out"
             >
               <Link to={`/shoes/${product.id}`}>
                 <img
-                  src={product.productImages[0].imageURL || collection1}
+                  src={product.productImages[0].imageURL || collection1Small}
                   alt={product.title}
-                  className="w-full h-60 object-cover rounded-t-lg mb-4 transition-transform duration-300 ease-in-out transform hover:scale-110"
+                  className="w-full h-object-cover rounded-t-lg mb-4 transition-transform duration-300 ease-in-out transform hover:scale-110"
                 />
               </Link>
               <div className="text-center">

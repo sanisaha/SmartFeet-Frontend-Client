@@ -2,9 +2,9 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import Carousel from "../../feature/Home/Carousel";
 
 // Mock image imports
-jest.mock("../../assets/images/Carousel-1.webp", () => "carousel1.webp");
-jest.mock("../../assets/images/Carousel-2.webp", () => "carousel2.webp");
-jest.mock("../../assets/images/Carousel-3.webp", () => "carousel3.webp");
+jest.mock("../../assets/images/Carousel-1_1920.webp", () => "carousel1.webp");
+jest.mock("../../assets/images/Carousel-2_1920.webp", () => "carousel2.webp");
+jest.mock("../../assets/images/Carousel-3_1920.webp", () => "carousel3.webp");
 
 describe("Carousel Component", () => {
   test("renders all slides correctly", () => {

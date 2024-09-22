@@ -53,10 +53,14 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
           />
         </div>
         <div className="flex justify-end">
-          <button className="mr-2" onClick={onClose}>
+          <button aria-label="Cancel" className="mr-2" onClick={onClose}>
             Cancel
           </button>
-          <button className="bg-blue-600 text-white" onClick={handleSubmit}>
+          <button
+            aria-label="Submit"
+            className="bg-blue-600 text-white"
+            onClick={handleSubmit}
+          >
             Submit
           </button>
         </div>

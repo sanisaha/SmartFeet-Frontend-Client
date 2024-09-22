@@ -108,6 +108,7 @@ const Header = () => {
       <div className="md:hidden">
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Open Menu"
           className="text-gray-600 focus:outline-none"
         >
           {isMenuOpen ? (
@@ -171,13 +172,17 @@ const Header = () => {
           )}
           {/* Clear Search */}
           {query && (
-            <button onClick={clearSearch} className="mx-2 text-blue-500">
+            <button
+              onClick={clearSearch}
+              aria-label="Clear search"
+              className="mx-2 text-blue-500"
+            >
               <XCircleIcon className="h-5 w-5" />
             </button>
           )}
           {/* Search Icon */}
           <span className="h-full border-l border-blue-300 mx-2"></span>
-          <button className="text-blue-500">
+          <button aria-label="Search" className="text-blue-500">
             <MagnifyingGlassIcon className="h-5 w-5" />
           </button>
         </div>
@@ -191,6 +196,7 @@ const Header = () => {
 
         <button
           onClick={toggleShowDropdown}
+          aria-label="User Profile"
           className="text-gray-600 hover:text-blue-600"
         >
           <FaUser />
@@ -209,6 +215,7 @@ const Header = () => {
                 </Link>
                 <button
                   onClick={handleLogout}
+                  aria-label="Logout"
                   className="block w-full px-4 py-2 text-gray-800 hover:bg-red-600"
                 >
                   Logout
@@ -240,6 +247,7 @@ const Header = () => {
             <li>
               <button
                 type="button"
+                aria-label="Women Shoes"
                 onClick={() => navigateToAllShoes("Women")}
                 className="text-blue-600 hover:text-red-600"
               >
@@ -249,6 +257,7 @@ const Header = () => {
             <li>
               <button
                 type="button"
+                aria-label="Men shoes"
                 onClick={() => navigateToAllShoes("Men")}
                 className="text-blue-600 hover:text-red-600"
               >
@@ -258,6 +267,7 @@ const Header = () => {
             <li>
               <button
                 type="button"
+                aria-label="Kids shoes"
                 onClick={() => navigateToAllShoes("Kids")}
                 className="text-blue-600 hover:text-red-600"
               >

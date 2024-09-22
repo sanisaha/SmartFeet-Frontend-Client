@@ -154,12 +154,14 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
             <button
               type="button"
               onClick={onClose}
+              aria-label="Cancel"
               className="bg-gray-500 text-white px-4 py-2 mr-2 rounded"
             >
               Cancel
             </button>
             <button
               type="submit"
+              aria-label="Save"
               className="bg-blue-500 text-white px-4 py-2 rounded"
             >
               Save

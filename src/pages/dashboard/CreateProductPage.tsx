@@ -76,7 +76,7 @@ const CreateProductPage: React.FC = () => {
 
   const handleColorChange = (
     index: number,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => {
@@ -115,6 +115,14 @@ const CreateProductPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const allColorsSelected = formData.productColors.every(
+      (color) => color.colorName !== undefined
+    );
+
+    if (!allColorsSelected) {
+      toast.error("Please select a color for all products.");
+      return; // Prevent submission
+    }
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -138,13 +146,10 @@ const CreateProductPage: React.FC = () => {
         }
       );
       const subCategoryId = subcategoryResponse.data.id;
-
       await dispatch(createProductByAdmin({ ...formData, subCategoryId }));
       toast.success("Product created successfully!");
     } catch (error) {
-      console.error("Error fetching subcategory:", error);
       toast.error("Error creating product. Please try again.");
-      // Optionally handle the error here (e.g., set error state)
     }
   };
 
@@ -355,6 +360,7 @@ const CreateProductPage: React.FC = () => {
             ))}
             <button
               type="button"
+              aria-label="Add Another Image"
               onClick={addImage}
               className="w-full py-2 px-4 text-white bg-blue-500 rounded hover:bg-blue-600"
             >
@@ -394,6 +400,7 @@ const CreateProductPage: React.FC = () => {
             ))}
             <button
               type="button"
+              aria-label="Add Another Size"
               onClick={addSize}
               className="w-full py-2 px-4 text-white bg-blue-500 rounded hover:bg-blue-600"
             >
@@ -411,10 +418,11 @@ const CreateProductPage: React.FC = () => {
                 <select
                   name="colorName"
                   value={color.colorName}
-                  onChange={handleChange}
+                  onChange={(e) => handleColorChange(index, e)}
                   className="w-full p-2 border border-gray-300 rounded"
                   required
                 >
+                  <option value="">Select Color</option>
                   {colors.map((color, index) => (
                     <option key={index} value={color}>
                       {color}
@@ -425,6 +433,7 @@ const CreateProductPage: React.FC = () => {
             ))}
             <button
               type="button"
+              aria-label="Add Another Color"
               onClick={addColor}
               className="w-full py-2 px-4 text-white bg-blue-500 rounded hover:bg-blue-600"
             >
@@ -436,6 +445,7 @@ const CreateProductPage: React.FC = () => {
           <div className="text-center">
             <button
               type="submit"
+              aria-label="Create Product"
               className={`w-full py-3 px-6 font-semibold text-white rounded-lg transition ${
                 loading ? "bg-gray-500" : "bg-blue-500 hover:bg-blue-600"
               }`}

@@ -1,6 +1,6 @@
 import React from "react";
 import { FaFacebook, FaInstagram, FaPinterest } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaTwitter } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -17,16 +17,32 @@ const Footer = () => {
 
           {/* Social Media Icons */}
           <div className="flex space-x-4">
-            <a href="#" className="text-blue-600 hover:text-blue-800">
+            <a
+              href="https://www.facebook.com"
+              aria-label="Facebook"
+              className="text-blue-600 hover:text-blue-800"
+            >
               <FaFacebook />
             </a>
-            <a href="#" className="text-pink-600 hover:text-pink-800">
+            <a
+              href="https://www.instagram.com/"
+              aria-label="Instagram"
+              className="text-pink-600 hover:text-pink-800"
+            >
               <FaInstagram />
             </a>
-            <a href="#" className="text-blue-400 hover:text-blue-600">
-              <FaXTwitter />
+            <a
+              href="https://www.twitter.com/"
+              aria-label="Twitter"
+              className="text-blue-400 hover:text-blue-600"
+            >
+              <FaTwitter />
             </a>
-            <a href="#" className="text-red-600 hover:text-red-800">
+            <a
+              href="https://www.pinterest.com/"
+              aria-label="Pinterest"
+              className="text-red-600 hover:text-red-800"
+            >
               <FaPinterest />
             </a>
           </div>
@@ -80,7 +96,10 @@ const Footer = () => {
               placeholder="Your email address"
               className="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600">
+            <button
+              aria-label="Subscribe"
+              className="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600"
+            >
               Subscribe
             </button>
           </div>

@@ -6,6 +6,7 @@ import { updateUser } from "../app/data/userSlice";
 import { Order } from "../models/order/Order";
 import { getUser } from "../app/data/authSlice";
 import { baseURL } from "../app/data/baseUrl";
+import { toast } from "react-toastify";
 
 const ProfilePage: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -61,7 +62,7 @@ const ProfilePage: React.FC = () => {
         );
         setOrders(response.data); // Set orders after successful data fetch
       } catch (error) {
-        console.error("Error fetching orders:", error);
+        toast.error("Error fetching orders. Please try again.");
         // Optionally handle the error here (e.g., set error state)
       }
     };
@@ -84,6 +85,7 @@ const ProfilePage: React.FC = () => {
       <div className="mb-8">
         <button
           className="flex justify-between w-full bg-blue-600 text-white text-left px-4 py-2 rounded-md"
+          aria-label="Update Your Details"
           onClick={() => setShowUpdateDetails(!showUpdateDetails)}
         >
           <h2 className="text-xl">Update Your Details</h2>
@@ -124,6 +126,7 @@ const ProfilePage: React.FC = () => {
               </div>
               <button
                 type="submit"
+                aria-label="Update Profile"
                 className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
               >
                 Update Profile
@@ -137,6 +140,7 @@ const ProfilePage: React.FC = () => {
       <div>
         <button
           className="flex justify-between w-full bg-blue-600 text-white text-left px-4 py-2 rounded-md"
+          aria-label="View Your Orders"
           onClick={() => setShowOrders(!showOrders)}
         >
           <h2 className="text-xl">Your Orders</h2>

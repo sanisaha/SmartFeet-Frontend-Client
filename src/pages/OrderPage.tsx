@@ -10,14 +10,32 @@ import { toast } from "react-toastify";
 import { OrderCreateDto } from "../models/order/orderDto";
 import { OrderItemCreateDto } from "../models/orderItem/orderItemDto";
 import { baseURL } from "../app/data/baseUrl";
-const userAddress = "1234 Elm St, Springfield, IL";
+
+interface FormData {
+  firstName: string;
+  lastName: string;
+  companyName: string;
+  email: string;
+  phone: string;
+  useSavedAddress: boolean;
+  unitNumber: string;
+  streetNumber: string;
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  paymentMethod: string;
+}
+
+type FormDataKeys = keyof FormData;
 
 const OrderPage = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const { items, totalPrice } = useSelector((state: RootState) => state.cart);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
     companyName: "",
@@ -31,20 +49,19 @@ const OrderPage = () => {
     city: "",
     postalCode: "",
     country: "",
-    paymentMethod: "", // Added for payment method
+    paymentMethod: "",
   });
-
   const [errors, setErrors] = useState<string[]>([]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name as keyof FormDataKeys]: value, // Type assertion here
     }));
   };
 
-  const handleCheckboxChange = () => {
+  /* const handleCheckboxChange = () => {
     if (formData.useSavedAddress) {
       // Uncheck the box and clear the address
       setFormData((prevData) => ({
@@ -73,11 +90,11 @@ const OrderPage = () => {
         country: "",
       }));
     }
-  };
+  }; */
 
   const validateForm = () => {
     const errorsList: string[] = [];
-    const requiredFields = [
+    const requiredFields: (keyof FormData)[] = [
       "firstName",
       "lastName",
       "email",
@@ -89,7 +106,7 @@ const OrderPage = () => {
     ];
 
     requiredFields.forEach((field) => {
-      if (!formData[field as keyof typeof formData]) {
+      if (!formData[field]) {
         errorsList.push(`${field} is required`);
       }
     });
@@ -174,274 +191,93 @@ const OrderPage = () => {
   };
 
   return (
-    <div className="flex justify-between p-8 w-2/3 mx-auto">
+    <div className="flex flex-col md:flex-row justify-between p-4 md:p-8 w-full md:w-2/3 mx-auto">
       {/* Billing Details Section */}
-      <section className="w-2/3 bg-white p-6 rounded-lg shadow-md">
+      <section className="w-full md:w-2/3 bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-6">Billing Detail</h2>
         <form>
           {/* Existing Billing Details */}
-          <div className="mb-4">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="first-name"
-            >
-              First Name*
-            </label>
-            <input
-              type="text"
-              id="first-name"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="last-name"
-            >
-              Last Name*
-            </label>
-            <input
-              type="text"
-              id="last-name"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="email"
-            >
-              Email Address*
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="phone"
-            >
-              Phone*
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleInputChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            />
-          </div>
-
-          {/* {isLoggedIn && userAddress && (
-            <div className="mb-4">
-              <input
-                type="checkbox"
-                id="use-saved-address"
-                name="useSavedAddress"
-                checked={formData.useSavedAddress}
-                onChange={handleCheckboxChange}
-                className="mr-2"
-              />
-              <label
-                htmlFor="use-saved-address"
-                className="text-sm text-gray-700"
-              >
-                Use default address for shipping?
-              </label>
-            </div>
-          )} */}
+          {(["firstName", "lastName", "email", "phone"] as FormDataKeys[]).map(
+            (field) => (
+              <div className="mb-4" key={field}>
+                <label
+                  className="block text-sm font-medium text-gray-700"
+                  htmlFor={field}
+                >
+                  {field.charAt(0).toUpperCase() + field.slice(1)}*
+                </label>
+                <input
+                  type={field === "email" ? "email" : "text"}
+                  id={field}
+                  name={field}
+                  value={formData[field] as string}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  required
+                />
+              </div>
+            )
+          )}
 
           {!formData.useSavedAddress && (
             <div>
-              <div className="mb-4">
-                <label
-                  className="block text-sm font-medium text-gray-700"
-                  htmlFor="unitNumber"
-                >
-                  Unit Number*
-                </label>
-                <input
-                  type="text"
-                  id="unitNumber"
-                  name="unitNumber"
-                  value={formData.unitNumber}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                  required
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  className="block text-sm font-medium text-gray-700"
-                  htmlFor="streetNumber"
-                >
-                  Street Number*
-                </label>
-                <input
-                  type="text"
-                  id="streetNumber"
-                  name="streetNumber"
-                  value={formData.streetNumber}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                  required
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  className="block text-sm font-medium text-gray-700"
-                  htmlFor="addressLine1"
-                >
-                  Address Line 1*
-                </label>
-                <input
-                  type="text"
-                  id="addressLine1"
-                  name="addressLine1"
-                  value={formData.addressLine1}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                  required
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  className="block text-sm font-medium text-gray-700"
-                  htmlFor="addressLine2"
-                >
-                  Address Line 2
-                </label>
-                <input
-                  type="text"
-                  id="addressLine2"
-                  name="addressLine2"
-                  value={formData.addressLine2}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  className="block text-sm font-medium text-gray-700"
-                  htmlFor="city"
-                >
-                  City*
-                </label>
-                <input
-                  type="text"
-                  id="city"
-                  name="city"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                  required
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  className="block text-sm font-medium text-gray-700"
-                  htmlFor="postalCode"
-                >
-                  Postal Code*
-                </label>
-                <input
-                  type="text"
-                  id="postalCode"
-                  name="postalCode"
-                  value={formData.postalCode}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                  required
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  className="block text-sm font-medium text-gray-700"
-                  htmlFor="country"
-                >
-                  Country*
-                </label>
-                <input
-                  type="text"
-                  id="country"
-                  name="country"
-                  value={formData.country}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                  required
-                />
-              </div>
+              {(
+                [
+                  "unitNumber",
+                  "streetNumber",
+                  "addressLine1",
+                  "addressLine2",
+                  "city",
+                  "postalCode",
+                  "country",
+                ] as FormDataKeys[]
+              ).map((field) => (
+                <div className="mb-4" key={field}>
+                  <label
+                    className="block text-sm font-medium text-gray-700"
+                    htmlFor={field}
+                  >
+                    {field.charAt(0).toUpperCase() + field.slice(1)}*
+                  </label>
+                  <input
+                    type="text"
+                    id={field}
+                    name={field}
+                    value={formData[field] as string}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    required
+                  />
+                </div>
+              ))}
             </div>
           )}
-          {/* Payment Methods */}
+
           <h3 className="text-xl font-semibold mb-6 text-black">
             Payment Method
           </h3>
 
-          {/* Card Payment Option */}
-          <div className="flex items-center mb-6">
-            <input
-              type="radio"
-              id="card"
-              name="paymentMethod"
-              value="card"
-              checked={formData.paymentMethod === "card"}
-              onChange={handleInputChange}
-              className="mr-3 w-4 h-4 text-green-500 bg-gray-100 border-gray-300 focus:ring-green-500"
-            />
-            <label htmlFor="card" className="text-md font-medium text-gray-700">
-              Card
-            </label>
-            <div className="ml-4 flex space-x-2 text-2xl text-gray-700">
-              <RiVisaFill className="text-yellow-400" />
-              <FaCcMastercard className="text-red-500" />
+          {/* Payment Methods */}
+          {["card", "noPayment"].map((method) => (
+            <div className="flex items-center mb-6" key={method}>
+              <input
+                type="radio"
+                id={method}
+                name="paymentMethod"
+                value={method}
+                checked={formData.paymentMethod === method}
+                onChange={handleInputChange}
+                className="mr-3 w-4 h-4 text-green-500 bg-gray-100 border-gray-300 focus:ring-green-500"
+              />
+              <label
+                htmlFor={method}
+                className="text-md font-medium text-gray-700"
+              >
+                {method === "card" ? "Card" : "Pay Later"}
+              </label>
             </div>
-          </div>
+          ))}
 
-          {/* Pay Later Option */}
-          <div className="flex items-center mb-6">
-            <input
-              type="radio"
-              id="noPayment"
-              name="paymentMethod"
-              value="noPayment"
-              checked={formData.paymentMethod === "noPayment"}
-              onChange={handleInputChange}
-              className="mr-3 w-4 h-4 text-green-500 bg-gray-100 border-gray-300 focus:ring-green-500"
-            />
-            <label
-              htmlFor="noPayment"
-              className="text-md font-medium text-gray-700"
-            >
-              Pay Later
-            </label>
-          </div>
           {/* Validation Errors */}
           {errors.length > 0 && (
             <div className="bg-red-100 text-red-800 p-4 rounded-md mb-4">
@@ -456,7 +292,7 @@ const OrderPage = () => {
       </section>
 
       {/* Order Summary Section */}
-      <section className="w-1/3 bg-gray-600 p-6 rounded-lg shadow-md text-white">
+      <section className="w-full md:w-1/3 bg-gray-600 p-6 rounded-lg shadow-md text-white mt-4 md:mt-0">
         <h2 className="text-2xl font-bold mb-6">Your Order</h2>
         {/* Order Items */}
         {items.map((item, index) => (
@@ -477,6 +313,7 @@ const OrderPage = () => {
 
         <button
           onClick={handlePlaceOrder}
+          aria-label="Place Order"
           className="w-full bg-green-600 text-white py-2 px-4 rounded-md mt-4 hover:bg-green-500"
         >
           Place Order
