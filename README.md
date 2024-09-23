@@ -30,7 +30,7 @@ You can find the backend repository at the following link: [SmartFeet Backend Re
 - [🛠️ Tech Stack](#tech-stack)
 - [📂 Project Structure](#project-structure)
 - [🚀 Getting Started](#getting-started)
-- [📸 Screenshots](screenshots)
+- [📸 Screenshots](#screenshots)
 - [🔍 Testing](#testing)
 
 ## Features
@@ -46,7 +46,7 @@ You can find the backend repository at the following link: [SmartFeet Backend Re
 | **Authentication**             | Supports Google Sign-in with Firebase Authentication, along with JWT-based secure login for users.                                                                      |
 | **Order and Payment**          | Users can place orders via credit card or choose the "Pay Later" option, view and manage their order history.                                                           |
 | **User Profile**               | Users can edit details, view order history, and manage reviews.                                                                                                         |
-| **Admin Dashboard**            | Admins can create, update, and delete products, as well as manage users and their roles. As admin user can login with email: ["admin@email.com"] password: ["password"] |
+| **Admin Dashboard**            | Admins can create, update, and delete products, as well as manage users and their roles. As admin user can login with email: _"admin@email.com"_ password: _"password"_ |
 
 ---
 
@@ -73,7 +73,7 @@ You can find the backend repository at the following link: [SmartFeet Backend Re
 
 ## Project Structure
 
-App.tsx
+```plaintext
 src
 ├── App.tsx
 ├── app
@@ -146,12 +146,13 @@ src
 │ ├── Header.tsx
 │ └── ProductHeader.tsx
 └── test
+```
 
 ## Getting Started
 
 ### Prerequisites
 
-- #### running backend server url
+- #### Running backend server url
 
 ### Installation
 
@@ -167,18 +168,36 @@ src
 npm install
 ```
 
-3. _Change the api request URL_:
+3. _Change the API Request URL_:
 
-from `app/data/baseUrl.ts`, set baseURL value to backend server value (for example: http://localhost:5096)
+To set the base URL for your backend server, follow these steps:
 
-```
-export const baseURL = your backend server url;
+1. Open the file located at `app/data/baseUrl.ts`.
+2. Update the `baseURL` value to match your backend server URL. For example, if your backend server is running locally, set it as follows:
+
+   ```typescript
+   export const baseURL = "http://localhost:5096"; //url could be different for yours
+   ```
+
 ```
 
 4. _start the project_:
 
 ```
+
 npm run
+
+```
+
+## Testing
+
+The test includes unit tests that verify the correctness and functionality of the application.
+Run tests:
+
+```
+
+npm test
+
 ```
 
 ## Screenshots
@@ -220,3 +239,4 @@ npm run
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Daisy UI](https://daisyui.com/)
 - [Firebase](https://firebase.google.com/)
+```
