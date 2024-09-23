@@ -158,9 +158,9 @@ src
 
 1. _Clone the repository_:
 
-   ```sh
-   git clone https://github.com/sanisaha/fs18_CSharp_FullStack_Frontend
-   ```
+```sh
+git clone https://github.com/sanisaha/fs18_CSharp_FullStack_Frontend
+```
 
 2. _Install the dependencies_:
 
@@ -175,18 +175,14 @@ To set the base URL for your backend server, follow these steps:
 1. Open the file located at `app/data/baseUrl.ts`.
 2. Update the `baseURL` value to match your backend server URL. For example, if your backend server is running locally, set it as follows:
 
-   ```typescript
-   export const baseURL = "http://localhost:5096"; //url could be different for yours
-   ```
-
+```typescript
+export const baseURL = "http://localhost:5096"; //url could be different for yours
 ```
 
 4. _start the project_:
 
 ```
-
 npm run
-
 ```
 
 ## Testing
@@ -195,9 +191,7 @@ The test includes unit tests that verify the correctness and functionality of th
 Run tests:
 
 ```
-
 npm test
-
 ```
 
 ## Screenshots
@@ -239,4 +233,7 @@ npm test
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Daisy UI](https://daisyui.com/)
 - [Firebase](https://firebase.google.com/)
+
+```
+
 ```
