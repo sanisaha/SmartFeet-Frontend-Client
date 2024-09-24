@@ -68,6 +68,7 @@ const CreateProductPage: React.FC = () => {
   ) => {
     const { name, value } = e.target;
     // Prevent duplicate size selections
+    // Prevent duplicate size selections
     if (name === "sizeValue") {
       const sizeAlreadySelected = formData.productSizes.some(
         (sizeObj, idx) => sizeObj.sizeValue === value && idx !== index
@@ -77,6 +78,7 @@ const CreateProductPage: React.FC = () => {
         toast.warning(
           "This size has already been selected. Please choose another size."
         );
+        e.target.value = formData.productSizes[index].sizeValue || "";
         return; // Prevent the state update if it's a duplicate
       }
     }
@@ -223,6 +225,7 @@ const CreateProductPage: React.FC = () => {
                 name="price"
                 value={formData.price}
                 onChange={handleChange}
+                min={1}
                 className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200"
                 placeholder="Enter price"
                 required
@@ -237,6 +240,7 @@ const CreateProductPage: React.FC = () => {
                 name="stock"
                 value={formData.stock}
                 onChange={handleChange}
+                min={1}
                 className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200"
                 placeholder="Enter stock quantity"
                 required
