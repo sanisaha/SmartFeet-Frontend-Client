@@ -224,6 +224,10 @@ npm test
 
 ![Admin Dashboard](src/assets/images/smartfeet-search_option.png)
 
+### Website performance - Lighthouse Score
+
+![Lighthouse](src/assets/images/smartfeet_lighthouse-performance.png)
+
 ---
 
 ## 📝 Acknowledgements
