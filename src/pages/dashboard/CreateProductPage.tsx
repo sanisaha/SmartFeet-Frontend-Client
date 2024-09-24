@@ -64,9 +64,22 @@ const CreateProductPage: React.FC = () => {
 
   const handleSizeChange = (
     index: number,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
+    // Prevent duplicate size selections
+    if (name === "sizeValue") {
+      const sizeAlreadySelected = formData.productSizes.some(
+        (sizeObj, idx) => sizeObj.sizeValue === value && idx !== index
+      );
+
+      if (sizeAlreadySelected) {
+        toast.warning(
+          "This size has already been selected. Please choose another size."
+        );
+        return; // Prevent the state update if it's a duplicate
+      }
+    }
     setFormData((prevData) => {
       const updatedSizes = [...prevData.productSizes];
       updatedSizes[index] = { ...updatedSizes[index], [name]: value };
@@ -115,6 +128,13 @@ const CreateProductPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const allSizesSelected = formData.productSizes.every(
+      (size) => size.sizeValue !== undefined
+    );
+    if (!allSizesSelected) {
+      toast.error("Please select a size for product");
+      return; // Prevent submission if not all sizes are selected
+    }
     const allColorsSelected = formData.productColors.every(
       (color) => color.colorName !== undefined
     );
@@ -378,10 +398,11 @@ const CreateProductPage: React.FC = () => {
                 <select
                   name="sizeValue"
                   value={size.sizeValue}
-                  onChange={handleChange}
+                  onChange={(e) => handleSizeChange(index, e)}
                   className="w-full p-2 border border-gray-300 rounded"
                   required
                 >
+                  <option value="">Select Size</option>
                   {sizes.map((size, index) => (
                     <option key={index} value={size}>
                       {size}
@@ -393,6 +414,7 @@ const CreateProductPage: React.FC = () => {
                   name="quantity"
                   value={size.quantity}
                   onChange={(e) => handleSizeChange(index, e)}
+                  min={1}
                   className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-blue-200 mt-2"
                   placeholder="Enter quantity"
                 />
