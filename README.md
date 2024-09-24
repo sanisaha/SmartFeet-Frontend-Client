@@ -20,7 +20,7 @@ Explore the live deployment of the project by visiting [SmartFeet Shoes](https:/
 
 The backend repository handles all server-side logic, database interactions, and API endpoints necessary to support the SmartFeet platform. Built using **ASP.NET Core**, it follows **Clean Architecture** principles to ensure the application is maintainable and scalable.
 
-You can find the backend repository at the following link: [SmartFeet Backend Repo](https://github.com/sanisaha/fs18_CSharp_FullStack_Backend).
+You can find the backend repository at the following link: [SmartFeet Backend Repo](https://github.com/sanisaha/SmartFeet-Backend-Server).
 
 ---
 
